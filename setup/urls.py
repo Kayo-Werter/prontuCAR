@@ -1,22 +1,18 @@
-"""
-URL configuration for setup project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from document.api.router import document_router
+from maintenance.api.router import maintenance_router
+from refuel.api.router import refuel_router
+from replacement.api.router import replacement_router
+from vehicle.api.router import vehicle_router
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
+    path('api/v1/', include(document_router.urls)),
+    path('api/v1/', include(maintenance_router.urls)),
+    path('api/v1/', include(refuel_router.urls)),
+    path('api/v1/', include(replacement_router.urls)),
+    path('api/v1/', include(vehicle_router.urls)),
 ]
