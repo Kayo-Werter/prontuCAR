@@ -9,3 +9,4 @@ class Replacement(models.Model):
 
     def __str__(self) -> str:
         return f'{self.vehicle} - {self.value_part}'
+    
