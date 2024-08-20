@@ -3,9 +3,6 @@ import { Input } from '@nextui-org/input';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
 
-
-
-
 export default function Login() {
   
   async function handleLogin (formulario: FormData) {

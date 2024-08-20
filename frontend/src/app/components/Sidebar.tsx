@@ -1,0 +1,55 @@
+/* instalar a biblioteca de icons: npm install react-icons */
+"use client";
+
+import React, { useState } from "react";
+import { SidebarItem } from "./SidebarItem";
+import { FiHome, FiCalendar, FiDroplet, FiSettings, FiFileText, FiActivity, FiUser, FiMenu, FiX } from "react-icons/fi";
+import Image from 'next/image';
+
+
+export const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <aside className={`flex flex-col h-screen p-4 bg-gray-50 transition-transform duration-300 ${isOpen ? "w-64" : "w-16"} md:relative md:translate-x-0`}>
+      <div className="flex items-center justify-between mb-10">
+        
+        {/* Logotipo */}
+        {isOpen && (
+          <Image src="/logo.png" alt="Logo" width={40} height={40} />
+        )}
+        {/* Botão do Menu Hambúrguer */}
+        <button onClick={() => setIsOpen(!isOpen)} className="focus:outline-none">
+          {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+        </button>
+        
+      </div>
+      <div className="flex flex-col gap-4">
+        <SidebarItem icon={<FiHome />} label={isOpen ? "Veículos Cadastrados" : ""} />
+        <SidebarItem icon={<FiCalendar />} label={isOpen ? "Histórico de Manutenção" : ""} />
+        <SidebarItem icon={<FiDroplet />} label={isOpen ? "Combustível" : ""} />
+        <SidebarItem icon={<FiActivity />} label={isOpen ? "Peças Trocadas" : ""} />
+        <SidebarItem icon={<FiFileText />} label={isOpen ? "Despesas" : ""} />
+        <SidebarItem icon={<FiFileText />} label={isOpen ? "Documentos" : ""} />
+        <SidebarItem icon={<FiSettings />} label={isOpen ? "Configurações" : ""} />
+      </div>
+      <div className="mt-auto flex items-center p-4">
+        {isOpen && (
+          <>
+            <Image
+                src="/profile.jpg"
+                alt="John Doe"
+                width={40} // Defina a largura
+                height={40} // Defina a altura
+                className="rounded-full object-cover mr-3"
+            />
+            <div>
+              <p className="text-sm font-medium">Usuário</p>
+              <p className="text-xs text-gray-500">israel</p>
+            </div>
+          </>
+        )}
+      </div>
+    </aside>
+  );
+};
