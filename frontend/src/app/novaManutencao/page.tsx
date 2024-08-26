@@ -1,9 +1,11 @@
 
 "use client";
 
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import { createMaintenance } from "@/app/services/api";
-
+import { Vehicle } from "../services/vehicle/vehicle";
+//import { fetchVehicles } from "@/app/services/maintenance/maintenance";
+import axios from "axios";
 
 const NovaManutencao = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +15,37 @@ const NovaManutencao = () => {
     local: "",
     maintenance_date: "",
   });
+
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+
+  // criar o get lá no meu "maintenance.ts" e chamar a função aqui
+  /*useEffect(() => {
+    const loadVehicles = async () => {
+      try {
+        const vehicles = await fetchVehicles();
+        setVehicles(vehicles);
+      } catch (error) {
+        console.error('Erro ao buscar veículos:', error);
+      }
+    };
+
+    loadVehicles(); // Chama a função ao montar o componente
+  }, []);*/
+  
+    // Função para buscar veículos da API
+    const fetchVehicles = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/api/v1/vehicle/');
+            console.log('Dados dos veículos:', response.data); // Verifique o conteúdo da resposta
+            setVehicles(response.data); // Ajuste conforme a estrutura da resposta da API
+        } catch (error) {
+            console.error('Erro ao buscar veículos:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchVehicles(); // Chama a função ao montar o componente
+    }, []);
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -59,14 +92,20 @@ const NovaManutencao = () => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium">Veículo</label>
-          <input
-            type="text"
-            name="vehicle"
-            value={formData.vehicle}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
+            <label className="block text-sm font-medium">Veículo</label>
+            <select
+                name="vehicle"
+                value={formData.vehicle}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+            >
+                <option value="">Selecione um veículo</option>
+                {vehicles.map((vehicle) => (
+                    <option key={vehicle.id} value={vehicle.id}>
+                        {vehicle.name}
+                    </option>
+                ))}
+            </select>
         </div>
         <div>
           <label className="block text-sm font-medium">Observações:</label>
@@ -102,7 +141,7 @@ const NovaManutencao = () => {
           />
         </div>
         <div className="text-center">
-          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded" type="submit">
+          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded mt-4" type="submit">
             Salvar
           </button>
         </div>
