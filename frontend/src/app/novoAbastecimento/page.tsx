@@ -97,23 +97,23 @@ const NovoAbastecimento = () => {
                     />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium">Tipo de Veículo</label>
-                  <select
-                    name="vehicle"
-                    value={formData.vehicle}
-                    onChange={handleChange}
-                    className="w-full p-2 border rounded"
-                  >
-                    <option value="">Selecione um tipo de veículo</option>
-                    {vehicleTypes.map((type) => (
-                      <option key={type.value} value={type.value}>
-                        {type.label}
-                      </option>
-                    ))}
-                  </select>
+                    <label className="block text-sm font-medium">Veículo</label>
+                    <select
+                        name="vehicle"
+                        value={formData.vehicle}
+                        onChange={handleChange}
+                        className="w-full p-2 border rounded"
+                    >
+                        <option value="">Selecione um veículo</option>
+                        {vehicles.map((vehicle) => (
+                            <option key={vehicle.id} value={vehicle.id}>
+                                {vehicle.name}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <div>
-                    <label className="block text-sm font-medium">Valor da Gasolina</label>
+                    <label className="block text-sm font-medium">Valor do Combustível</label>
                     <input
                         type="number"
                         name="price_gasoline"
@@ -135,18 +135,18 @@ const NovoAbastecimento = () => {
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium">Litros de Gasolina</label>
+                    <label className="block text-sm font-medium">Litros de Combustível</label>
                     <input
                         type="number"
                         name="liters_gasoline"
                         value={formData.liters_gasoline}
                         readOnly
-                        placeholder="Gasolina (L)"
+                        placeholder="Combustível (L)"
                         className="w-full p-2 border rounded"
                     />
                 </div>
                 <div className="text-center">
-                    <button className="w-full bg-blue-600 text-white px-4 py-2 rounded" type="submit">
+                    <button className="w-full bg-blue-600 text-white px-4 py-2 rounded mt-4" type="submit">
                         Salvar
                     </button>
                 </div>

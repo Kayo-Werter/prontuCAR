@@ -33,7 +33,7 @@ export const Sidebar = () => {
         <SidebarItem icon={<FiDroplet />} label={isOpen ? "Cadastrar Veículo" : ""} path="/cadastrarVeiculo" />
         <SidebarItem icon={<FiActivity />} label={isOpen ? "Peças Trocadas" : ""} path="/telaCadastro" />
         <SidebarItem icon={<FiFileText />} label={isOpen ? "Despesas" : ""} path="/despesas" />
-        <SidebarItem icon={<FiFileText />} label={isOpen ? "Documentos" : ""} path="/documentos" />
+        <SidebarItem icon={<FiFileText />} label={isOpen ? "Login" : ""} path="/telaLogin" />
         <SidebarItem icon={<FiSettings />} label={isOpen ? "Configurações" : ""} path="/configuracoes" />
       </div>
       <div className="mt-auto flex items-center p-4">
