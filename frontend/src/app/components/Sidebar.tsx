@@ -3,8 +3,11 @@
 
 import React, { useState } from "react";
 import { SidebarItem } from "./SidebarItem";
-import { FiHome, FiCalendar, FiDroplet, FiSettings, FiFileText, FiActivity, FiUser, FiMenu, FiX } from "react-icons/fi";
+import { FiMenu, FiX, FiHome } from "react-icons/fi";
 import Image from 'next/image';
+import { BsCarFrontFill, BsFuelPump, BsCoin, BsFolder, BsGear } from "react-icons/bs";
+import { VscTools } from "react-icons/vsc";
+import { GiMechanicGarage } from "react-icons/gi";
 
 
 
@@ -28,19 +31,20 @@ export const Sidebar = () => {
         
       </div>
       <div className="flex flex-col gap-4">
-        <SidebarItem icon={<FiHome />} label={isOpen ? "Veículos Cadastrados" : ""} path="/novaManutencao" />
-        <SidebarItem icon={<FiCalendar />} label={isOpen ? "Novo Abastecimento" : ""} path="/novoAbastecimento" />
-        <SidebarItem icon={<FiDroplet />} label={isOpen ? "Cadastrar Veículo" : ""} path="/cadastrarVeiculo" />
-        <SidebarItem icon={<FiActivity />} label={isOpen ? "Peças Trocadas" : ""} path="/telaCadastro" />
-        <SidebarItem icon={<FiFileText />} label={isOpen ? "Despesas" : ""} path="/despesas" />
-        <SidebarItem icon={<FiFileText />} label={isOpen ? "Login" : ""} path="/telaLogin" />
-        <SidebarItem icon={<FiSettings />} label={isOpen ? "Configurações" : ""} path="/configuracoes" />
+        <SidebarItem icon={<FiHome />} label={isOpen ? "Home" : ""} path="/home" />
+        <SidebarItem icon={<BsCarFrontFill />} label={isOpen ? "Veículos Cadastrados" : ""} path="/cadastrarVeiculo" />
+        <SidebarItem icon={<BsFuelPump />} label={isOpen ? "Novo Abastecimento" : ""} path="/novoAbastecimento" />
+        <SidebarItem icon={<VscTools />} label={isOpen ? "Nova manutenção" : ""} path="/novaManutencao" />
+        <SidebarItem icon={<GiMechanicGarage />} label={isOpen ? "Peças Trocadas" : ""} path="/telaCadastro" />
+        <SidebarItem icon={<BsCoin />} label={isOpen ? "Despesas" : ""} path="/despesas" />
+        <SidebarItem icon={<BsFolder />} label={isOpen ? "Login" : ""} path="/telaLogin" />
+        <SidebarItem icon={<BsGear />} label={isOpen ? "Configurações" : ""} path="/configuracoes" />
       </div>
       <div className="mt-auto flex items-center p-4">
         {isOpen && (
           <>
             <Image
-                src="/profile.jpg"
+                src="/perfil.jpg"
                 alt="John Doe"
                 width={40} // Defina a largura
                 height={40} // Defina a altura

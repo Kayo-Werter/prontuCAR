@@ -14,7 +14,7 @@ export default function Login() {
     })
 
     if (response.ok){
-      redirect("/filmes")//Redireciona para a página principal após o login
+      redirect("/home")//Redireciona para a página principal após o login
     }
 
 

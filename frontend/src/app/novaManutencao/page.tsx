@@ -1,4 +1,4 @@
-
+/* para implementar mascara: npm install react-input-mask */
 "use client";
 
 import React, {useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import { createMaintenance } from "@/app/services/maintenance/maintenance";
 import { Vehicle } from "../services/vehicle/vehicle";
 //import { fetchVehicles } from "@/app/services/maintenance/maintenance";
 import axios from "axios";
+
 
 const NovaManutencao = () => {
   const [formData, setFormData] = useState({
