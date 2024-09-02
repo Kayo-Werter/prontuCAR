@@ -6,6 +6,7 @@ import { SidebarItem } from "./SidebarItem";
 import { FiMenu, FiX, FiHome } from "react-icons/fi";
 import Image from 'next/image';
 import { BsCarFrontFill, BsFuelPump, BsCoin, BsFolder, BsGear } from "react-icons/bs";
+import { FaClipboardList } from "react-icons/fa";
 import { VscTools } from "react-icons/vsc";
 import { GiMechanicGarage } from "react-icons/gi";
 
@@ -33,11 +34,11 @@ export const Sidebar = () => {
       <div className="flex flex-col gap-4">
         <SidebarItem icon={<FiHome />} label={isOpen ? "Home" : ""} path="/home" />
         <SidebarItem icon={<BsCarFrontFill />} label={isOpen ? "Veículos Cadastrados" : ""} path="/cadastrarVeiculo" />
-        <SidebarItem icon={<BsFuelPump />} label={isOpen ? "Novo Abastecimento" : ""} path="/novoAbastecimento" />
-        <SidebarItem icon={<VscTools />} label={isOpen ? "Nova manutenção" : ""} path="/novaManutencao" />
-        <SidebarItem icon={<GiMechanicGarage />} label={isOpen ? "Peças Trocadas" : ""} path="/telaCadastro" />
+        <SidebarItem icon={<FaClipboardList />} label={isOpen ? "Histórico de Manutenções" : ""} path="/novaManutencao" />
+        <SidebarItem icon={<BsFuelPump />} label={isOpen ? "Combustível" : ""} path="/novoAbastecimento" />
+        <SidebarItem icon={<VscTools />} label={isOpen ? "Peças Trocadas" : ""} path="/novaManutencao" />
         <SidebarItem icon={<BsCoin />} label={isOpen ? "Despesas" : ""} path="/despesas" />
-        <SidebarItem icon={<BsFolder />} label={isOpen ? "Login" : ""} path="/telaLogin" />
+        <SidebarItem icon={<BsFolder />} label={isOpen ? "Documentos" : ""} path="/telaLogin" />
         <SidebarItem icon={<BsGear />} label={isOpen ? "Configurações" : ""} path="/configuracoes" />
       </div>
       <div className="mt-auto flex items-center p-4">

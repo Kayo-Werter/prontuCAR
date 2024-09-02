@@ -1,9 +1,8 @@
-/* para implementar mascara: npm install react-input-mask */
+
 "use client";
 
 import React, { useState } from "react";
 import { createMaintenance } from "@/app/services/api";
-
 
 
 const NovaManutencao = () => {
