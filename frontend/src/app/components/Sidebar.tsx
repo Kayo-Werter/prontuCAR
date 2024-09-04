@@ -37,7 +37,7 @@ export const Sidebar = () => {
         <SidebarItem icon={<VscTools />} label={isOpen ? "Nova manutenção" : ""} path="/novaManutencao" />
         <SidebarItem icon={<GiMechanicGarage />} label={isOpen ? "Peças Trocadas" : ""} path="/telaCadastro" />
         <SidebarItem icon={<BsCoin />} label={isOpen ? "Despesas" : ""} path="/despesas" />
-        <SidebarItem icon={<BsFolder />} label={isOpen ? "Login" : ""} path="/telaLogin" />
+        <SidebarItem icon={<BsFolder />} label={isOpen ? "Histórico de abastecimento" : ""} path="/historicoAbastecimento" />
         <SidebarItem icon={<BsGear />} label={isOpen ? "Configurações" : ""} path="/configuracoes" />
       </div>
       <div className="mt-auto flex items-center p-4">

@@ -106,6 +106,7 @@ export default NovoVeiculo;*/
 import { useState } from "react";
 import { Vehicle, createVehicle } from "../services/vehicle/vehicle";
 import { vehicleTypes } from "../services/vehicle/vehicleType";
+import InputMask from "react-input-mask";
 
 const AddNewVehicle = () => {
     const [formData, setFormData] = useState({
@@ -186,19 +187,20 @@ const AddNewVehicle = () => {
                     </select>
                 </div>
                 <div>
-                    <label className="block text-sm font-medium">Nome do Veículo</label>
+                    <label className="block text-sm font-medium">Modelo do Veículo</label>
                     <input
                         type="text"
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
-                        placeholder="Digite o nome do veículo"
+                        placeholder="Digite o modelo do veículo"
                         className="w-full p-2 border rounded"
                     />
                 </div>
                 <div>
                     <label className="block text-sm font-medium">Placa do Veículo</label>
-                    <input
+                    <InputMask
+                        mask="***-****"
                         type="text"
                         name="plate"
                         value={formData.plate}
@@ -208,14 +210,14 @@ const AddNewVehicle = () => {
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium">Documento</label>
+                    <label className="block text-sm font-medium" htmlFor="document">Documento</label>
                     <input
-                        type="text"
-                        name="document"
-                        value={formData.document}
-                        onChange={handleChange}
-                        placeholder="Insira o documento"
-                        className="w-full p-2 border rounded"
+                      type="text"
+                      name="document"
+                      value={formData.document}
+                      onChange={handleChange}
+                      placeholder="Insira Documento"
+                      className="w-full p-2 border rounded"
                     />
                 </div>
                 <div className="text-center">

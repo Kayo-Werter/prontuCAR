@@ -124,6 +124,8 @@ import { Vehicle } from "./services/vehicle/vehicle";
 //import { fetchVehicles } from "@/app/services/maintenance/maintenance";
 import axios from "axios";
 //import InputMask from 'react-input-mask';
+import InputMask from "react-input-mask";
+
 
 
 
@@ -251,11 +253,11 @@ const NovaManutencao = () => {
         </div>
         <div>
           <label className="block text-sm font-medium">Valor:</label>
-          <input
-            type="text"
-            name="value"
+          <InputMask
+            mask="R$ 99,999.99"
             value={formData.value}
             onChange={handleChange}
+            name="value"
             placeholder="R$ 0,00"
             className="w-full p-2 border rounded"
           />
