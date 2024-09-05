@@ -1,11 +1,11 @@
 // services/vehicle.ts
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/api/v1/';
+const API_URL = 'http://127.0.0.1:8000/api/v1/';
 
 export interface Vehicle {
     /*automoveis: boolean;*/
-    id: number;
+    
     automobile: string;
     name: string;
     plate?: string;

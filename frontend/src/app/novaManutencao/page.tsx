@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { createMaintenance } from "@/app/services/api";
+import { createMaintenance } from "@/app/services/maintenance/maintenance";
 
 
 

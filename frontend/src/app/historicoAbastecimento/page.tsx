@@ -56,7 +56,7 @@ const Abastecimentos = () => {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">ABASTECIMENTOS</h1>
-      <button className="bg-blue-600 text-white px-4 py-2 rounded-full mb-6" onClick={() => router.push('/novoAbastecimento')}>
+      <button className="bg-blue-600 text-white px-4 py-2 rounded-full mb-6" onClick={() => router.push('historicoAbastecimento/novoAbastecimento')}>
         + Novo Abastecimento
       </button>
       <div className="space-y-4">

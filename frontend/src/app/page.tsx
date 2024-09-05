@@ -116,77 +116,120 @@ export default function Home() {
 
 
 /* para implementar mascara: npm install react-input-mask */
-  
-import { Button } from '@nextui-org/button';
-import { Input } from '@nextui-org/input';
-import Image from 'next/image';
-import { redirect } from 'next/navigation';
+/* para implementar mascara: npm install react-input-mask */
+"use client";
 
-export default function Login() {
-  
-  async function handleLogin (formulario: FormData) {
-    'use server'
-
-    const response = await fetch("http://127.0.0.1:8000/api/token/", {
-      method: "POST",
-      body: formulario,
-    })
-
-    if (response.ok){
-      redirect("/home")//Redireciona para a página principal após o login
-    }
+import React, { useState } from "react";
+import { createMaintenance } from "@/app/services/maintenance/maintenance";
 
 
+
+const NovaManutencao = () => {
+  const [formData, setFormData] = useState({
+    vehicle: "",
+    value: "",
+    description: "",
+    local: "",
+    maintenance_date: "",
+  });
+
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+
+    // Converta a data para um objeto Date
+    const maintenanceData = {
+      ...formData,
+      value: parseFloat(formData.value), // Caso o valor seja uma string, converta para número
+      maintenance_date: new Date(formData.maintenance_date), // Converte string para Date
+    };
+
+
+    try {
+      await createMaintenance(maintenanceData);
+      alert("Manutenção criada com sucesso!");
+    } catch (error) {
+      console.error("Erro ao criar manutenção:", error);
+    }
+  };
+
+
   return (
-    <div className="h-screen flex flex-col md:flex-row relative">
-      {/* Esquerda - Formulário de Login */}
-      <div className="w-full md:w-1/2 bg-gray-100 flex flex-col justify-center items-center p-6 md:p-10">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-black">Bem vindo!</h1>
-        <form className="w-full max-w-xs">
-          <div className="mb-4">
-            <Input
-              label="Usuário"
-              type="text"
-              name="username"
-              fullWidth
-              className="mb-3"
-            />
-          </div>
-          <div className="mb-6">
-            <Input
-              label="Senha"
-              type="password"
-              name="password"
-              fullWidth
-              className="mb-3"
-            />
-          </div>
-          <Button
-            className="w-full"
-            type="submit"
-            color="primary"
-          >
-            Entrar
-          </Button>
-          <div className="mt-4 text-center">
-            <a href="https://www.google.com.br/?hl=pt-BR" className="text-blue-600">Esqueceu sua senha?</a>
-          </div>
-        </form>
-      </div>
-  
-      {/* Direita - Imagem e Texto */}
-      <div className="w-full md:w-1/2 bg-blue-800 flex justify-center items-center relative p-4 md:p-0">
-        <Image
-            src="/prontuCar.png"
-            alt="Login illustration"
-            width={500}
-            height={500}
-            className="object-contain absolute md:-left-40"
+    <div className="p-6 grid justify-items-center">
+      <h1 className="text-2xl font-bold mb-6">Nova Manutenção</h1>
+      <form onSubmit={handleSubmit} className="space-y-2 w-full max-w-md">
+        <div>
+          <label className="block text-sm font-medium">Data da manutenção:</label>
+          <input
+            type="date"
+            name="maintenance_date"
+            value={formData.maintenance_date}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
           />
-      </div>
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Veículo</label>
+          <input
+            type="text"
+            name="vehicle"
+            value={formData.vehicle}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Observações:</label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Digite aqui:"
+            className="w-full p-2 border rounded"
+            rows={4}
+          ></textarea>
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Local:</label>
+          <input
+            type="text"
+            name="local"
+            value={formData.local}
+            onChange={handleChange}
+            placeholder="Digite aqui:"
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Valor:</label>
+          <input
+            type="text"
+            name="value"
+            value={formData.value}
+            onChange={handleChange}
+            placeholder="R$ 0,00"
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div className="text-center">
+          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded" type="submit">
+            Salvar
+          </button>
+        </div>
+      </form>
     </div>
   );
-  
 };
+
+
+export default NovaManutencao;
+

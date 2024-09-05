@@ -35,10 +35,10 @@ export const Sidebar = () => {
         <SidebarItem icon={<FiHome />} label={isOpen ? "Home" : ""} path="/home" />
         <SidebarItem icon={<BsCarFrontFill />} label={isOpen ? "Veículos Cadastrados" : ""} path="/cadastrarVeiculo" />
         <SidebarItem icon={<FaClipboardList />} label={isOpen ? "Histórico de Manutenções" : ""} path="/novaManutencao" />
-        <SidebarItem icon={<BsFuelPump />} label={isOpen ? "Combustível" : ""} path="/novoAbastecimento" />
+        <SidebarItem icon={<BsFuelPump />} label={isOpen ? "Combustível" : ""} path="/historicoAbastecimento" />
         <SidebarItem icon={<VscTools />} label={isOpen ? "Peças Trocadas" : ""} path="/novaManutencao" />
         <SidebarItem icon={<BsCoin />} label={isOpen ? "Despesas" : ""} path="/despesas" />
-        <SidebarItem icon={<BsFolder />} label={isOpen ? "Histórico de abastecimento" : ""} path="/historicoAbastecimento" />
+        <SidebarItem icon={<BsFolder />} label={isOpen ? "Documentos" : ""} path="/documentos" />
         <SidebarItem icon={<BsGear />} label={isOpen ? "Configurações" : ""} path="/configuracoes" />
       </div>
       <div className="mt-auto flex items-center p-4">
