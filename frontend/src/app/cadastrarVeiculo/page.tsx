@@ -1,6 +1,6 @@
 /* tela de novo veiculo */
 
-/*"use client";
+"use client";
 
 import React, { useState } from "react";
 import { createVehicle } from "@/app/services/vehicle/vehicle";

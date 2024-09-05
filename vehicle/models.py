@@ -6,6 +6,7 @@ class Vehicle(models.Model):
         ('Moto', 'Moto'),
         ('Carro', 'Carro')
     ]
+
     automobile = models.CharField(choices=automoveis, max_length=255)
     name = models.CharField(max_length=255)
     plate = models.CharField(max_length=255, null=True, blank=True)
