@@ -13,6 +13,7 @@ const Abastecimentos = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
+  
   const fetchRefuels = async () => {
     setLoading(true);
     try {
@@ -36,6 +37,7 @@ const Abastecimentos = () => {
       router.push(`/editarAbastecimento/${id}`);
     }
   };
+
 
   const handleDelete = async (id?: number) => {
     if (id) {
@@ -87,3 +89,4 @@ const Abastecimentos = () => {
 };
 
 export default Abastecimentos;
+

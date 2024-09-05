@@ -2,10 +2,9 @@
 
 "use client";
 
-import { useParams, useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { updateRefuel } from '@/app/services/refuel/refuel';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 
 // Defina uma interface para os dados do formulário
