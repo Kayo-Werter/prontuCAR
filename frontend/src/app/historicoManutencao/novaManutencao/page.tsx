@@ -1,10 +1,11 @@
 /* para implementar mascara: npm install react-input-mask */
 "use client";
 
-import React, { useState, useEffect } from "react";
 import { createMaintenance } from "@/app/services/maintenance/maintenance";
-import { Vehicle } from "../services/vehicle/vehicle";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Vehicle } from "../../services/vehicle/vehicle";
+import { useRouter } from "next/navigation";
 
 const NovaManutencao = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ const NovaManutencao = () => {
     maintenance_date: "",
   });
 
+  const router = useRouter();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 
   const fetchVehicles = async () => {
@@ -47,7 +49,7 @@ useEffect(() => {
     const maintenanceData = {
       ...formData,
       value: parseFloat(formData.value), // Caso o valor seja uma string, converta para número
-      maintenance_date: new Date(formData.maintenance_date), // Converte string para Date
+      //maintenance_date: new Date(formData.maintenance_date), // Converte string para Date
     };
 
 
@@ -124,7 +126,7 @@ useEffect(() => {
           />
         </div>
         <div className="text-center">
-          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded" type="submit">
+          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded" type="submit" onClick={() => router.push('/historicoManutencao')}>
             Salvar
           </button>
         </div>

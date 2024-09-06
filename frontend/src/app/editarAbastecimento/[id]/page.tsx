@@ -7,6 +7,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 
+
 // Defina uma interface para os dados do formulário
 interface FormData {
   price_gasoline: string;

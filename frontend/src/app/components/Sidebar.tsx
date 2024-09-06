@@ -34,7 +34,7 @@ export const Sidebar = () => {
       <div className="flex flex-col gap-4">
         <SidebarItem icon={<FiHome />} label={isOpen ? "Home" : ""} path="/home" />
         <SidebarItem icon={<BsCarFrontFill />} label={isOpen ? "Veículos Cadastrados" : ""} path="/cadastrarVeiculo" />
-        <SidebarItem icon={<FaClipboardList />} label={isOpen ? "Histórico de Manutenções" : ""} path="/novaManutencao" />
+        <SidebarItem icon={<FaClipboardList />} label={isOpen ? "Histórico de Manutenções" : ""} path="/historicoManutencao" />
         <SidebarItem icon={<BsFuelPump />} label={isOpen ? "Combustível" : ""} path="/historicoAbastecimento" />
         <SidebarItem icon={<VscTools />} label={isOpen ? "Peças Trocadas" : ""} path="/novaManutencao" />
         <SidebarItem icon={<BsCoin />} label={isOpen ? "Despesas" : ""} path="/despesas" />

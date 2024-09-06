@@ -5,11 +5,12 @@ import axios from "axios";
 const API_URL = 'http://127.0.0.1:8000/api/v1/';
 
 export interface Maintenance {
+    id?: number;
     vehicle: string;
     value: number;
     description: string;
     local: string;
-    maintenance_date: Date;
+    maintenance_date: string; //maintenance_date: Date;
 }
 
 export interface MaintenanceResponse{
