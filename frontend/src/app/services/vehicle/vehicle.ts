@@ -5,7 +5,7 @@ const API_URL = 'http://127.0.0.1:8000/api/v1/';
 
 export interface Vehicle {
     /*automoveis: boolean;*/
-    
+    id? : string;
     automobile: string;
     name: string;
     plate?: string;

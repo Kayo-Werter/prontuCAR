@@ -1,10 +1,10 @@
 /* para implementar mascara: npm install react-input-mask */
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createMaintenance } from "@/app/services/maintenance/maintenance";
-
-
+import { Vehicle } from "../services/vehicle/vehicle";
+import axios from "axios";
 
 const NovaManutencao = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +15,21 @@ const NovaManutencao = () => {
     maintenance_date: "",
   });
 
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+
+  const fetchVehicles = async () => {
+    try {
+        const response = await axios.get('http://127.0.0.1:8000/api/v1/vehicle/');
+        console.log('Dados dos veículos:', response.data); // Verifique o conteúdo da resposta
+        setVehicles(response.data); // Ajuste conforme a estrutura da resposta da API
+    } catch (error) {
+        console.error('Erro ao buscar veículos:', error);
+    }
+};
+
+useEffect(() => {
+    fetchVehicles(); // Chama a função ao montar o componente
+}, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -60,14 +75,20 @@ const NovaManutencao = () => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium">Veículo</label>
-          <input
-            type="text"
-            name="vehicle"
-            value={formData.vehicle}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
+            <label className="block text-sm font-medium">Tipo de Veículo</label>
+            <select
+              name="vehicle"
+              value={formData.vehicle}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+            >
+              <option value="">Selecione um tipo de veículo</option>
+              {vehicles.map((vehicle) => (
+                <option key={vehicle.id} value={vehicle.id}>
+                  {vehicle.name}
+                </option>
+              ))}
+            </select>
         </div>
         <div>
           <label className="block text-sm font-medium">Observações:</label>

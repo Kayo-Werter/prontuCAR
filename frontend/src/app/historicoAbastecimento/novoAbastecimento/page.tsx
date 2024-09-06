@@ -166,6 +166,7 @@ import axios from "axios";
 import { newRefuel } from "../../services/refuel/refuel";
 import { Vehicle } from "../../services/vehicle/vehicle";
 import { VehicleType, vehicleTypes } from "../../services/vehicle/vehicleType";
+import { useRouter } from "next/navigation";
 
 const NovoAbastecimento = () => {
     const [formData, setFormData] = useState({
@@ -175,7 +176,8 @@ const NovoAbastecimento = () => {
         liters_gasoline: "",
         refuel_date: "",
     });
-  
+    
+    const router = useRouter();
     const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   
     // Função para buscar veículos da API
@@ -265,9 +267,9 @@ const NovoAbastecimento = () => {
                     className="w-full p-2 border rounded"
                   >
                     <option value="">Selecione um tipo de veículo</option>
-                    {vehicles.map((type) => (
-                      <option key={type.value} value={type.value}>
-                        {type.label}
+                    {vehicles.map((vehicle) => (
+                      <option key={vehicle.id} value={vehicle.id}>
+                        {vehicle.name}
                       </option>
                     ))}
                   </select>
@@ -306,7 +308,7 @@ const NovoAbastecimento = () => {
                     />
                 </div>
                 <div className="text-center">
-                    <button className="w-full bg-blue-600 text-white px-4 py-2 rounded" type="submit">
+                    <button className="w-full bg-blue-600 text-white px-4 py-2 rounded" type="submit" onClick={() => router.push('/historicoAbastecimento')}>
                         Salvar
                     </button>
                 </div>
