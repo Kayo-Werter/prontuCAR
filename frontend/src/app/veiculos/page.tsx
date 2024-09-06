@@ -10,7 +10,7 @@ import { Maintenance } from "../services/maintenance/maintenance";
 import { Vehicle } from "../services/vehicle/vehicle";
 
 const Manutencoes = () => {
-  const [maintenances, setMaintenances] = useState<Maintenance[]>([]);
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -18,22 +18,22 @@ const Manutencoes = () => {
   //const [vehicles, setVehicles] = useState<{ [key: number]: Vehicle }>({});
   
 
-  const fetchMaintenances = async () => {
+  const fetchVehicles = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8000/api/v1/maintenance/');
+      const response = await axios.get('http://localhost:8000/api/v1/vehicle/');
       console.log('Dados recebidos na função fetchRefuels:', response.data);
-      setMaintenances(response.data); // Ajuste conforme a estrutura da resposta da API
+      setVehicles(response.data); // Ajuste conforme a estrutura da resposta da API
     } catch (error) {
-      setError('Erro ao buscar Manutenção');
-      console.error('Erro ao buscar Manutenção:', error);
+      setError('Erro ao buscar Veículo');
+      console.error('Erro ao buscar Veículo:', error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchMaintenances();
+    fetchVehicles();
   }, []);
 
   const handleEdit = (id?: number) => {
@@ -47,7 +47,7 @@ const Manutencoes = () => {
     if (id) {
       try {
         await deleteRefuel(id);
-        setMaintenances(maintenances.filter(maintenance => maintenance.id !== id));
+        setVehicles(vehicles.filter(vehicle => vehicle.id !== id));
       } catch (error) {
         console.error('Erro ao excluir abastecimento:', error);
       }
@@ -59,26 +59,26 @@ const Manutencoes = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">MANUTENÇÕES</h1>
-      <button className="bg-blue-600 text-white px-4 py-2 rounded-full mb-6" onClick={() => router.push('historicoManutencao/novaManutencao')}>
-        + Nova Manutenção
+      <h1 className="text-2xl font-bold mb-6">Veículos</h1>
+      <button className="bg-blue-600 text-white px-4 py-2 rounded-full mb-6" onClick={() => router.push('veiculos/cadastrarVeiculo')}>
+        + Novo Veículo
       </button>
       <div className="space-y-4">
-        {maintenances && maintenances.length > 0 ? (
-          maintenances.map((maintenance) => (
-            <div key={maintenance.id} className="bg-white p-4 rounded shadow-sm flex justify-between">
+        {vehicles && vehicles.length > 0 ? (
+          vehicles.map((vehicle) => (
+            <div key={vehicle.id} className="bg-white p-4 rounded shadow-sm flex justify-between">
               <div>
-                <p><strong>Data da manutenção:</strong> {maintenance.maintenance_date}</p>
-                <p><strong>Local:</strong> {maintenance.local}</p>
-                <p><strong>Valor:</strong> R$ {maintenance.value}</p>
-                <p><strong>Veículo:</strong> {maintenance.vehicle}</p>
-                <p><strong>Observações:</strong> {maintenance.description}</p>
+                <p><strong>Automóvel:</strong> {vehicle.automobile}</p>
+                <p><strong>Data de Compra:</strong> {vehicle.buy_day}</p>
+                <p><strong>Documento:</strong> {vehicle.document}</p>
+                <p><strong>Placa:</strong> {vehicle.plate}</p>
+                <p><strong>Modelo:</strong>{vehicle.name}</p>
               </div>
               <div className="flex items-center space-x-2">
-                <button className="text-yellow-500" onClick={() => handleEdit(maintenance.id)}>
+                <button className="text-yellow-500" onClick={() => handleEdit(vehicle.id)}>
                   <FaEdit />
                 </button>
-                <button className="text-red-500" onClick={() => handleDelete(maintenance.id)}>
+                <button className="text-red-500" onClick={() => handleDelete(vehicle.id)}>
                   <FaTrash />
                 </button>
               </div>

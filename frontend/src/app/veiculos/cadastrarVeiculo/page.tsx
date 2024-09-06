@@ -103,9 +103,10 @@ export default NovoVeiculo;*/
 "use client"
  
 import { useState } from "react";
-import { Vehicle, createVehicle } from "../services/vehicle/vehicle";
-import { vehicleTypes } from "../services/vehicle/vehicleType";
 import InputMask from "react-input-mask";
+import { Vehicle, createVehicle } from "../../services/vehicle/vehicle";
+import { vehicleTypes } from "../../services/vehicle/vehicleType";
+import { useRouter } from "next/navigation";
 
 const AddNewVehicle = () => {
     const [formData, setFormData] = useState({
@@ -116,6 +117,7 @@ const AddNewVehicle = () => {
         buy_day: "",
     });
     const [error, setError] = useState<string | null>(null);
+    const router = useRouter();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -220,8 +222,11 @@ const AddNewVehicle = () => {
                     />
                 </div>
                 <div className="text-center">
-                    <button className="w-full bg-blue-600 text-white px-4 py-2 rounded mt-4" type="submit">
+                    <button className="w-full bg-blue-600 text-white px-4 py-2 rounded mt-4" type="submit" onClick={() => router.push('/veiculos')}>
                         Salvar
+                    </button>
+                    <button className="mt-4 w-full border-4 border-blue-600 text-blue-600 px-4 py-2 rounded" type="submit" onClick={() => router.push('/veiculos')} >
+                        Cancelar
                     </button>
                 </div>
             </form>

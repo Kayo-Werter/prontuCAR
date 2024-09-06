@@ -65,9 +65,9 @@ const Abastecimentos = () => {
             <div key={refuel.id} className="bg-white p-4 rounded shadow-sm flex justify-between">
               <div>
                 <p><strong>Abastecido no dia:</strong> {refuel.refuel_date}</p>
-                <p><strong>Valor da gasolina:</strong> R$ {refuel.price_gasoline}</p>
+                <p><strong>Valor do Combustível:</strong> R$ {refuel.price_gasoline}</p>
                 <p><strong>Valor Total:</strong> R$ {refuel.value_total}</p>
-                <p><strong>Litros de gasolina:</strong> {refuel.liters_gasoline}L</p>
+                <p><strong>Litros de Combustível:</strong> {refuel.liters_gasoline}L</p>
                 <p><strong>Veículo:</strong> {refuel.vehicle}</p>
               </div>
               <div className="flex items-center space-x-2">
