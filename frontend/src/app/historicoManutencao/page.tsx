@@ -1,32 +1,27 @@
-
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
-import { getRefuels, Refuel, deleteRefuel } from "../services/refuel/refuel";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { FaEdit, FaTrash } from 'react-icons/fa';
-import { Maintenance } from "../services/maintenance/maintenance";
-import { Vehicle } from "../services/vehicle/vehicle";
+import { deleteMaintenance, Maintenance } from "../services/maintenance/maintenance";
+import DeleteConfirmationModal from "../components/deleteConfirmationModal";
 
 const Manutencoes = () => {
   const [maintenances, setMaintenances] = useState<Maintenance[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedMaintenance, setSelectedMaintenance] = useState<Maintenance | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const router = useRouter();
-
-  //const [vehicles, setVehicles] = useState<{ [key: number]: Vehicle }>({});
-  
 
   const fetchMaintenances = async () => {
     setLoading(true);
     try {
       const response = await axios.get('http://localhost:8000/api/v1/maintenance/');
-      console.log('Dados recebidos na função fetchRefuels:', response.data);
-      setMaintenances(response.data); // Ajuste conforme a estrutura da resposta da API
+      setMaintenances(response.data);
     } catch (error) {
       setError('Erro ao buscar Manutenção');
-      console.error('Erro ao buscar Manutenção:', error);
     } finally {
       setLoading(false);
     }
@@ -38,20 +33,29 @@ const Manutencoes = () => {
 
   const handleEdit = (id?: number) => {
     if (id) {
-      router.push(`/editarAbastecimento/${id}`);
+      router.push(`/editarManutencao/${id}`);
     }
   };
 
-
-  const handleDelete = async (id?: number) => {
-    if (id) {
+  const handleDelete = async () => {
+    if (selectedMaintenance?.id) {
       try {
-        await deleteRefuel(id);
-        setMaintenances(maintenances.filter(maintenance => maintenance.id !== id));
+        await deleteMaintenance(selectedMaintenance.id);
+        setMaintenances(maintenances.filter(maintenance => maintenance.id !== selectedMaintenance.id));
+        setIsModalOpen(false); // Fecha o modal após a exclusão
       } catch (error) {
-        console.error('Erro ao excluir abastecimento:', error);
+        console.error('Erro ao excluir Manutenção:', error);
       }
     }
+  };
+
+  const openDeleteModal = (maintenance: Maintenance) => {
+    setSelectedMaintenance(maintenance);
+    setIsModalOpen(true); // Abre o modal
+  };
+
+  const closeDeleteModal = () => {
+    setIsModalOpen(false); // Fecha o modal
   };
 
   if (loading) return <p>Carregando...</p>;
@@ -78,7 +82,7 @@ const Manutencoes = () => {
                 <button className="text-yellow-500" onClick={() => handleEdit(maintenance.id)}>
                   <FaEdit />
                 </button>
-                <button className="text-red-500" onClick={() => handleDelete(maintenance.id)}>
+                <button className="text-red-500" onClick={() => openDeleteModal(maintenance)}>
                   <FaTrash />
                 </button>
               </div>
@@ -88,9 +92,18 @@ const Manutencoes = () => {
           <p>Nenhum abastecimento encontrado.</p>
         )}
       </div>
+
+      {/* Modal de confirmação de exclusão */}
+      {selectedMaintenance && (
+        <DeleteConfirmationModal
+          isOpen={isModalOpen}
+          maintenance={selectedMaintenance}
+          onClose={closeDeleteModal}
+          onDelete={handleDelete}
+        />
+      )}
     </div>
   );
 };
 
 export default Manutencoes;
-

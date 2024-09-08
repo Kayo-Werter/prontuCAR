@@ -6,12 +6,15 @@ import { getRefuels, Refuel, deleteRefuel } from "../services/refuel/refuel";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import DeleteConfirmationModal from "../components/deleteConfirmationModal";
 
 const Abastecimentos = () => {
   const [refuels, setRefuels] = useState<Refuel[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const [selectedRefuel, setSelectedRefuel] = useState<Refuel | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   
   const fetchRefuels = async () => {
@@ -39,15 +42,25 @@ const Abastecimentos = () => {
   };
 
 
-  const handleDelete = async (id?: number) => {
-    if (id) {
+  const handleDelete = async () => {
+    if (selectedRefuel?.id) {
       try {
-        await deleteRefuel(id);
-        setRefuels(refuels.filter(refuel => refuel.id !== id));
+        await deleteRefuel(selectedRefuel.id);
+        setRefuels(refuels.filter(refuel => refuel.id !== selectedRefuel.id));
+        setIsModalOpen(false); // Fecha o modal após a exclusão
       } catch (error) {
-        console.error('Erro ao excluir abastecimento:', error);
+        console.error('Erro ao excluir Manutenção:', error);
       }
     }
+  };
+
+  const openDeleteModal = (refuel: Refuel) => {
+    setSelectedRefuel(refuel);
+    setIsModalOpen(true); // Abre o modal
+  };
+
+  const closeDeleteModal = () => {
+    setIsModalOpen(false); // Fecha o modal
   };
 
   if (loading) return <p>Carregando...</p>;
@@ -74,7 +87,7 @@ const Abastecimentos = () => {
                 <button className="text-yellow-500" onClick={() => handleEdit(refuel.id)}>
                   <FaEdit />
                 </button>
-                <button className="text-red-500" onClick={() => handleDelete(refuel.id)}>
+                <button className="text-red-500" onClick={() => openDeleteModal(refuel)}>
                   <FaTrash />
                 </button>
               </div>
@@ -84,6 +97,15 @@ const Abastecimentos = () => {
           <p>Nenhum abastecimento encontrado.</p>
         )}
       </div>
+        
+      {selectedRefuel &&(
+        <DeleteConfirmationModal
+        isOpen={isModalOpen}
+        refuel={selectedRefuel}
+        onClose={closeDeleteModal}
+        onDelete={handleDelete}
+      />
+      )}
     </div>
   );
 };
