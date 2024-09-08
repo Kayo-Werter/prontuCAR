@@ -183,7 +183,7 @@ const NovoAbastecimento = () => {
     // Função para buscar veículos da API
     const fetchVehicles = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/v1/vehicle/');
+            const response = await axios.get('http://localhost:8000/api/v1/vehicle/');
             console.log('Dados dos veículos:', response.data); // Verifique o conteúdo da resposta
             setVehicles(response.data); // Ajuste conforme a estrutura da resposta da API
         } catch (error) {

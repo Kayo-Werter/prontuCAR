@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
-import { SidebarItem } from "./SidebarItem";
-import { FiMenu, FiX, FiHome } from "react-icons/fi";
 import Image from 'next/image';
-import { BsCarFrontFill, BsFuelPump, BsCoin, BsFolder, BsGear } from "react-icons/bs";
-import { FaClipboardList } from "react-icons/fa";
-import { VscTools } from "react-icons/vsc";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { BsCarFrontFill, BsCoin, BsFolder, BsFuelPump, BsGear } from "react-icons/bs";
+import { FaClipboardList } from "react-icons/fa";
+import { FiHome, FiMenu, FiX } from "react-icons/fi";
+import { VscTools } from "react-icons/vsc";
+import { SidebarItem } from "./SidebarItem";
 
 export const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);

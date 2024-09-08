@@ -3,7 +3,7 @@
 import axios from "axios";
 import { Vehicle } from "../vehicle/vehicle";
 
-const API_URL = 'http://127.0.0.1:8000/api/v1/';
+const API_URL = 'http://localhost:8000/api/v1/';
 
 export interface Refuel {
     id?: number;
