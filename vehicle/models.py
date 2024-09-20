@@ -1,6 +1,7 @@
 from django.db import models
 from document.models import Document
 
+
 class Vehicle(models.Model):
     automoveis = [
         ('Moto', 'Moto'),
@@ -16,4 +17,3 @@ class Vehicle(models.Model):
 
     def __str__(self):
         return self.name
-    
