@@ -6,6 +6,7 @@ import axios from "axios";
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { deleteMaintenance, Maintenance } from "../services/maintenance/maintenance";
 import DeleteConfirmationModal from "../components/deleteConfirmationModal";
+import { getVehicles, Vehicle } from "../services/vehicle/vehicle";
 
 const Manutencoes = () => {
   const [maintenances, setMaintenances] = useState<Maintenance[]>([]);
@@ -14,6 +15,7 @@ const Manutencoes = () => {
   const [selectedMaintenance, setSelectedMaintenance] = useState<Maintenance | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const router = useRouter();
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 
   const fetchMaintenances = async () => {
     setLoading(true);
@@ -89,7 +91,7 @@ const Manutencoes = () => {
             </div>
           ))
         ) : (
-          <p>Nenhum abastecimento encontrado.</p>
+          <p>Nenhuma manutenção encontrado.</p>
         )}
       </div>
 

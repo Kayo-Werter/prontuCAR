@@ -1,20 +1,18 @@
 /* para implementar mascara: npm install react-input-mask */
 "use client";
 
-import { createMaintenance } from "@/app/services/maintenance/maintenance";
+import { createReplacement } from "@/app/services/replacement/replacement";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Vehicle } from "../../services/vehicle/vehicle";
 import { useRouter } from "next/navigation";
-import InputMask from "react-input-mask";
 
-const NovaManutencao = () => {
+const NovaTroca = () => {
   const [formData, setFormData] = useState({
     vehicle: "",
-    value: "",
-    description: "",
-    local: "",
-    maintenance_date: "",
+    exchanged_part: "",
+    value_part: "",
+    replacement_day: "",
   });
 
   const router = useRouter();
@@ -47,32 +45,32 @@ useEffect(() => {
 
 
     // Converta a data para um objeto Date
-    const maintenanceData = {
+    const replacementData = {
       ...formData,
-      value: parseFloat(formData.value), // Caso o valor seja uma string, converta para número
+      //value_part: parseFloat(formData.value_part), // Caso o valor seja uma string, converta para número
       //maintenance_date: new Date(formData.maintenance_date), // Converte string para Date
     };
 
 
     try {
-      await createMaintenance(maintenanceData);
-      alert("Manutenção criada com sucesso!");
+      await createReplacement(replacementData);
+      alert("Troca criada com sucesso!");
     } catch (error) {
-      console.error("Erro ao criar manutenção:", error);
+      console.error("Erro ao criar troca:", error);
     }
   };
 
 
   return (
     <div className="p-6 grid justify-items-center">
-      <h1 className="text-2xl font-bold mb-6">Nova Manutenção</h1>
+      <h1 className="text-2xl font-bold mb-6">Nova Troca</h1>
       <form onSubmit={handleSubmit} className="space-y-2 w-full max-w-md">
         <div>
-          <label className="block text-sm font-medium">Data da manutenção:</label>
+          <label className="block text-sm font-medium">Data da troca:</label>
           <input
             type="date"
-            name="maintenance_date"
-            value={formData.maintenance_date}
+            name="replacement_day"
+            value={formData.replacement_day}
             onChange={handleChange}
             className="w-full p-2 border rounded"
           />
@@ -85,7 +83,7 @@ useEffect(() => {
               onChange={handleChange}
               className="w-full p-2 border rounded"
             >
-              <option value="">Selecione um tipo de veículo</option>
+              <option value="">Selecione um veículo</option>
               {vehicles.map((vehicle) => (
                 <option key={vehicle.id} value={vehicle.id}>
                   {vehicle.name}
@@ -93,6 +91,18 @@ useEffect(() => {
               ))}
             </select>
         </div>
+        <div>
+          <label className="block text-sm font-medium">Peça Nova:</label>
+          <input
+            type="text"
+            name="exchanged_part"
+            value={formData.exchanged_part}
+            onChange={handleChange}
+            placeholder="Digite aqui:"
+            className="w-full p-2 border rounded"
+          />
+        </div>
+
         <div>
           <label className="block text-sm font-medium">Observações:</label>
           <textarea
@@ -117,21 +127,20 @@ useEffect(() => {
         </div>
         <div>
           <label className="block text-sm font-medium">Valor:</label>
-          <InputMask
-            mask="***"
+          <input
             type="text"
             name="value"
-            value={formData.value}
+            value={formData.value_part}
             onChange={handleChange}
             placeholder="R$ 0,00"
             className="w-full p-2 border rounded"
           />
         </div>
         <div className="text-center">
-          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded" type="submit" onClick={() => router.push('/historicoManutencao')}>
+          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded" type="submit" onClick={() => router.push('/pecas')}>
             Salvar
           </button>
-          <button className="mt-4 w-full border-4 border-blue-600 text-blue-600 px-4 py-2 rounded" type="submit" onClick={() => router.push('/historicoManutencao')} >
+          <button className="mt-4 w-full border-4 border-blue-600 text-blue-600 px-4 py-2 rounded" type="submit" onClick={() => router.push('/pecas')} >
               Cancelar
           </button>
         </div>
@@ -141,5 +150,5 @@ useEffect(() => {
 };
 
 
-export default NovaManutencao;
+export default NovaTroca;
 

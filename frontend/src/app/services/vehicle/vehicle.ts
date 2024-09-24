@@ -4,7 +4,6 @@ import axios from 'axios';
 const API_URL = 'http://localhost:8000/api/v1/';
 
 export interface Vehicle {
-    /*automoveis: boolean;*/
     id? : number;
     automobile: string;
     name: string;
