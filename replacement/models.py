@@ -7,7 +7,7 @@ class Replacement(models.Model):
     value_part = models.DecimalField(default=0, max_digits=20, decimal_places=2)
     replacement_day = models.DateField(auto_now=True)
     description = models.TextField(null=True, blank=True)
-    local = models.CharField(max_length=255)
+    local = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self) -> str:
         return f'{self.vehicle} - {self.value_part}'
