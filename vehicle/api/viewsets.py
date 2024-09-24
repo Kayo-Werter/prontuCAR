@@ -47,7 +47,7 @@ class VehicleExpensesViewSet(viewsets.ViewSet):
         data = []
 
         refuels_data = [{'refuel': refuel.id, 'date': refuel.refuel_date, 'price': refuel.value_total } for refuel in refuels]
-        refuels_expense = metrics.get_total_cost_metrics(pk=pk)
+        expenses = metrics.get_total_cost_metrics(pk=pk)
         maintenances_data = [{'maintenance': maintenance.id, 'date': maintenance.maintenance_date, 'price': maintenance.value } for maintenance in maintenances]
 
         replacements_data = [{'replacement': replacement.id, 'date': replacement.exchanged_part, 'price': replacement.value_part } for replacement in replacements]
@@ -55,7 +55,7 @@ class VehicleExpensesViewSet(viewsets.ViewSet):
         data.append({
             'vehicle_id': vehicle.id,
             'vehicle_name': vehicle.name,
-            'refuels_expense': refuels_expense,
+            'expenses': expenses,
             'refuels_data': refuels_data,
             'maintenances_data': maintenances_data,
             'replacements': replacements_data
