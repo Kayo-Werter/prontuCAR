@@ -6,7 +6,7 @@ const API_URL = 'http://localhost:8000/api/v1/';
 
 export interface Maintenance {
     id?: number;
-    vehicle: string;
+    vehicle: string; // string ou number
     value: number;
     description: string;
     local: string;

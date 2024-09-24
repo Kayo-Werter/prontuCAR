@@ -5,7 +5,7 @@
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
+import { vehicleTypes } from "../../services/vehicle/vehicleType";
 
 
 // Defina uma interface para os dados do formulário
@@ -49,6 +49,14 @@ const EditarVeiculo = () => {
     });
   };
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -78,15 +86,20 @@ const EditarVeiculo = () => {
           <label htmlFor="automobile" className="block text-sm font-medium">
             Automóvel:
           </label>
-          <input
-            type="text"
-            id="automobile"
+          <select
             name="automobile"
             value={formData.automobile}
-            onChange={handleChange}
+            onChange={handleSelectChange}
             className="w-full p-2 border rounded"
-            required
-          />
+        >
+            <option value="">Selecione um tipo de veículo</option>
+            {vehicleTypes.map((type) => (
+                <option key={type.value} value={type.value}>
+                    {type.label}
+                </option>
+            ))}
+        </select>
+         
         </div>
 
         <div>

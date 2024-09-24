@@ -1,12 +1,9 @@
-/* para implementar mascara: npm install react-input-mask */
+
 "use client";
 
-import { createMaintenance } from "@/app/services/maintenance/maintenance";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Vehicle } from "../../services/vehicle/vehicle";
-import { useRouter } from "next/navigation";
-import InputMask from "react-input-mask";
+import React, { useState } from "react";
+import { createMaintenance } from "@/app/services/api";
+
 
 const NovaManutencao = () => {
   const [formData, setFormData] = useState({
@@ -17,22 +14,6 @@ const NovaManutencao = () => {
     maintenance_date: "",
   });
 
-  const router = useRouter();
-  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-
-  const fetchVehicles = async () => {
-    try {
-        const response = await axios.get('http://localhost:8000/api/v1/vehicle/');
-        console.log('Dados dos veículos:', response.data); // Verifique o conteúdo da resposta
-        setVehicles(response.data); // Ajuste conforme a estrutura da resposta da API
-    } catch (error) {
-        console.error('Erro ao buscar veículos:', error);
-    }
-};
-
-useEffect(() => {
-    fetchVehicles(); // Chama a função ao montar o componente
-}, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -50,7 +31,7 @@ useEffect(() => {
     const maintenanceData = {
       ...formData,
       value: parseFloat(formData.value), // Caso o valor seja uma string, converta para número
-      //maintenance_date: new Date(formData.maintenance_date), // Converte string para Date
+      maintenance_date: new Date(formData.maintenance_date), // Converte string para Date
     };
 
 
@@ -78,20 +59,14 @@ useEffect(() => {
           />
         </div>
         <div>
-            <label className="block text-sm font-medium">Tipo de Veículo</label>
-            <select
-              name="vehicle"
-              value={formData.vehicle}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-            >
-              <option value="">Selecione um tipo de veículo</option>
-              {vehicles.map((vehicle) => (
-                <option key={vehicle.id} value={vehicle.id}>
-                  {vehicle.name}
-                </option>
-              ))}
-            </select>
+          <label className="block text-sm font-medium">Veículo</label>
+          <input
+            type="text"
+            name="vehicle"
+            value={formData.vehicle}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          />
         </div>
         <div>
           <label className="block text-sm font-medium">Observações:</label>
@@ -117,8 +92,7 @@ useEffect(() => {
         </div>
         <div>
           <label className="block text-sm font-medium">Valor:</label>
-          <InputMask
-            mask="***"
+          <input
             type="text"
             name="value"
             value={formData.value}
@@ -128,11 +102,8 @@ useEffect(() => {
           />
         </div>
         <div className="text-center">
-          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded" type="submit" onClick={() => router.push('/historicoManutencao')}>
+          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded" type="submit">
             Salvar
-          </button>
-          <button className="mt-4 w-full border-4 border-blue-600 text-blue-600 px-4 py-2 rounded" type="submit" onClick={() => router.push('/historicoManutencao')} >
-              Cancelar
           </button>
         </div>
       </form>

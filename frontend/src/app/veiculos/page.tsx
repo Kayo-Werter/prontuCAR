@@ -1,13 +1,12 @@
 
 "use client"
 
-import { useEffect, useState } from "react";
-import { getRefuels, Refuel, deleteRefuel } from "../services/refuel/refuel";
-import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from 'react-icons/fa';
-import { deleteVehicle, Vehicle } from "../services/vehicle/vehicle";
 import DeleteConfirmationModal from "../components/deleteConfirmationModal";
+import { deleteVehicle, Vehicle } from "../services/vehicle/vehicle";
 
 const Veiculos = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);

@@ -153,6 +153,9 @@ const EditarAbastecimento = () => {
           <button className="w-full bg-blue-600 text-white px-4 py-2 rounded mt-4" type="submit">
             Salvar Alterações
           </button>
+          <button className="mt-4 w-full border-4 border-blue-600 text-blue-600 px-4 py-2 rounded" type="submit" onClick={() => router.push('/historicoAbastecimento')} >
+              Cancelar
+          </button>
         </div>
       </form>
     </div>
