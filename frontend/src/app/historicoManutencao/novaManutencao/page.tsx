@@ -6,7 +6,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Vehicle } from "../../services/vehicle/vehicle";
 import { useRouter } from "next/navigation";
-import InputMask from "react-input-mask";
+
 
 const NovaManutencao = () => {
   const [formData, setFormData] = useState({
@@ -85,7 +85,7 @@ useEffect(() => {
               onChange={handleChange}
               className="w-full p-2 border rounded"
             >
-              <option value="">Selecione um tipo de veículo</option>
+              <option value="">Selecione um veículo</option>
               {vehicles.map((vehicle) => (
                 <option key={vehicle.id} value={vehicle.id}>
                   {vehicle.name}
@@ -117,8 +117,7 @@ useEffect(() => {
         </div>
         <div>
           <label className="block text-sm font-medium">Valor:</label>
-          <InputMask
-            mask="***"
+          <input
             type="text"
             name="value"
             value={formData.value}

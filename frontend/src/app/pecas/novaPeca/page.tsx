@@ -13,6 +13,8 @@ const NovaTroca = () => {
     exchanged_part: "",
     value_part: "",
     replacement_day: "",
+    description: "",
+    local: "",
   });
 
   const router = useRouter();
@@ -129,7 +131,7 @@ useEffect(() => {
           <label className="block text-sm font-medium">Valor:</label>
           <input
             type="text"
-            name="value"
+            name="value_part"
             value={formData.value_part}
             onChange={handleChange}
             placeholder="R$ 0,00"
