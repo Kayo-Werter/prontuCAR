@@ -53,9 +53,9 @@ const EditarManutencao = () => {
   const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
 
-      const maintenanceData: Maintenance = {
-          ...formData,
-          maintenance_date: new Date(formData.maintenance_date).toISOString(), // Converte para ISO string
+      const maintenanceData = {
+        ...formData,
+        maintenance_date: new Date(formData.maintenance_date), // Converte string para Date
       };
 
       if (id) {
