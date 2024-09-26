@@ -1,4 +1,5 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator
+from django.utils import timezone
 from django.db import models
 from vehicle.models import Vehicle
 
@@ -11,7 +12,7 @@ class Refuel(models.Model):
     value_total = models.DecimalField(default=0, validators=[MinValueValidator(0, 'Avaliação não pode ser inferior a 0')], 
                                       max_digits=20, decimal_places=2)
     liters_gasoline = models.DecimalField(max_digits=20, decimal_places=2, editable=False)
-    refuel_date = models.DateField(auto_now=True)
+    refuel_date = models.DateField(default=timezone.now)
 
     def save(self, *args, **kwargs):
         if (self.value_total > 0) and (self.price_gasoline > 0):
