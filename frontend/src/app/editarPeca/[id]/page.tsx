@@ -5,25 +5,15 @@
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-
-
-// Defina uma interface para os dados do formulário
-interface FormData {
-    vehicle: string;
-    exchanged_part: string;
-    value_part: string;
-    replacement_day: string;
-    description: string;
-    local: string;
-}
+import { Vehicle } from '@/app/services/vehicle/vehicle';
+import { Replacement } from '@/app/services/replacement/replacement';
 
 const EditarPeca = () => {
   const params = useParams();
   const id = params?.id as string | undefined;
   const router = useRouter();
 
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<Replacement>({
     vehicle: "",
     exchanged_part: "",
     value_part: "",
@@ -32,24 +22,35 @@ const EditarPeca = () => {
     local: "",
   });
 
-  useEffect(() => {
-    if (id) {
-      axios.get(`http://localhost:8000/api/v1/replacement/${id}/`)
-        .then((response) => {
-          setFormData(response.data);
-        })
-        .catch((error) => {
-          console.error('Erro ao obter dados de peça:', error);
-        });
-    }
-  }, [id]);
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    useEffect(() => {
+        // Obter lista de veículos
+        axios.get('http://localhost:8000/api/v1/vehicle/')
+            .then((response) => {
+                setVehicles(response.data);
+            })
+            .catch((error) => {
+                console.error('Erro ao obter lista de veículos:', error);
+            });
+
+        if (id) {
+            axios.get(`http://localhost:8000/api/v1/replacement/${id}/`)
+                .then((response) => {
+                    setFormData(response.data);
+                })
+                .catch((error) => {
+                    console.error('Erro ao obter dados de peça:', error);
+                });
+        }
+    }, [id]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+        ...formData,
+        [e.target.name]: e.target.value,
     });
-  };
+};
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,15 +96,21 @@ const EditarPeca = () => {
           <label htmlFor="vehicle" className="block text-sm font-medium">
             Veículo
           </label>
-          <input
-            type="text"
-            id="vehicle"
-            name="vehicle"
-            value={formData.vehicle}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-            required
-          />
+          <select
+                id="vehicle"
+                name="vehicle"
+                value={formData.vehicle}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+                required
+            >
+                <option value="">Selecione um veículo</option>
+                {vehicles.map((vehicle) => (
+                    <option key={vehicle.id} value={vehicle.id}>
+                        {vehicle.name}
+                    </option>
+                ))}
+            </select>
         </div>
 
         <div>
