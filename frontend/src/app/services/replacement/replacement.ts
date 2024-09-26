@@ -13,10 +13,12 @@ const API_URL = 'http://localhost:8000/api/v1/';
 
 export interface Replacement{
     id?: number;
-    vahicle?: string;
+    vehicle: string;
     exchanged_part: string;
     value_part: string;
     replacement_day: string;
+    description: string;
+    local: string;
     
 }
 

@@ -94,7 +94,7 @@ const ListaPecas = () => {
           replacements.map((replacement) => (
             <div key={replacement.id} className="bg-white p-4 rounded shadow-sm flex justify-between">
               <div>
-                <p><strong>Veículo:</strong> {replacement.vahicle}</p>
+                <p><strong>Veículo:</strong> {replacement.vehicle}</p>
                 <p><strong>Data da troca:</strong> {replacement.replacement_day}</p>
                 <p><strong>Valor:</strong> R$ {replacement.value_part}</p>
                 <p><strong>Local:</strong> {replacement.local}</p>
