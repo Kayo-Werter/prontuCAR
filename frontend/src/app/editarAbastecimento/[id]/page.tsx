@@ -1,62 +1,83 @@
-
-
 "use client";
 
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-
-
-// Defina uma interface para os dados do formulário
-interface FormData {
-  price_gasoline: string;
-  value_total: string;
-  liters_gasoline: string;
-  refuel_date: string;
-  vehicle: string;
-}
+import { Refuel } from '@/app/services/refuel/refuel';
+import { Vehicle } from '@/app/services/vehicle/vehicle';
 
 const EditarAbastecimento = () => {
   const params = useParams();
   const id = params?.id as string | undefined;
   const router = useRouter();
 
-  const [formData, setFormData] = useState<FormData>({
-    price_gasoline: '',
-    value_total: '',
-    liters_gasoline: '',
+  const [formData, setFormData] = useState<Refuel>({
+    price_gasoline: undefined,
+    value_total: undefined,
+    liters_gasoline: undefined,
     refuel_date: '',
     vehicle: '',
   });
 
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+
   useEffect(() => {
+    // Obter lista de veículos
+    axios.get('http://localhost:8000/api/v1/vehicle/')
+      .then((response) => {
+        setVehicles(response.data);
+      })
+      .catch((error) => {
+        console.error('Erro ao obter lista de veículos:', error);
+      });
+
     if (id) {
       axios.get(`http://localhost:8000/api/v1/refuel/${id}/`)
         .then((response) => {
-          setFormData(response.data);
+          const refuelData = response.data;
+          setFormData({
+            ...refuelData,
+            price_gasoline: refuelData.price_gasoline !== null ? parseFloat(refuelData.price_gasoline) : undefined,
+            value_total: refuelData.value_total !== null ? parseFloat(refuelData.value_total) : undefined,
+            liters_gasoline: refuelData.liters_gasoline !== null ? parseFloat(refuelData.liters_gasoline) : undefined,
+          });
         })
         .catch((error) => {
-          console.error('Erro ao obter dados do abastecimento:', error);
+          console.error('Erro ao obter dados de abastecimento:', error);
         });
     }
   }, [id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+
+    // Converte os valores de string para número, se necessário
+    const parsedValue = (name === 'price_gasoline' || name === 'value_total' || name === 'liters_gasoline')
+      ? (value === '' ? undefined : parseFloat(value))
+      : value;
+
+    // Atualiza o estado do formulário
+    setFormData((prevFormData) => {
+      const updatedData = { ...prevFormData, [name]: parsedValue };
+
+      // Calcula os litros de gasolina se price_gasoline e value_total estão definidos
+      if (name === 'price_gasoline' || name === 'value_total') {
+        const price_gasoline = parseFloat(updatedData.price_gasoline?.toString() || "0");
+        const value_total = parseFloat(updatedData.value_total?.toString() || "0");
+
+        if (price_gasoline > 0 && value_total > 0) {
+          updatedData.liters_gasoline = parseFloat((value_total / price_gasoline).toFixed(2));
+        } else {
+          updatedData.liters_gasoline = undefined;
+        }
+      }
+
+      return updatedData;
     });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    const refuelData = {
-      ...formData,
-      refuel_date: new Date(formData.refuel_date), // Converte string para Date
-    };
-
 
     if (id) {
       axios.put(`http://localhost:8000/api/v1/refuel/${id}/`, formData)
@@ -79,10 +100,11 @@ const EditarAbastecimento = () => {
             Valor da Gasolina
           </label>
           <input
-            type="text"
+            type="number"
+            step="0.01"
             id="price_gasoline"
             name="price_gasoline"
-            value={formData.price_gasoline}
+            value={formData.price_gasoline ?? ''}
             onChange={handleChange}
             className="w-full p-2 border rounded"
             required
@@ -94,10 +116,11 @@ const EditarAbastecimento = () => {
             Valor Total
           </label>
           <input
-            type="text"
+            type="number"
+            step="0.01"
             id="value_total"
             name="value_total"
-            value={formData.value_total}
+            value={formData.value_total ?? ''}
             onChange={handleChange}
             className="w-full p-2 border rounded"
             required
@@ -109,13 +132,15 @@ const EditarAbastecimento = () => {
             Litros de Gasolina
           </label>
           <input
-            type="text"
+            type="number"
+            step="0.01"
             id="liters_gasoline"
             name="liters_gasoline"
-            value={formData.liters_gasoline}
+            value={formData.liters_gasoline ?? ''}
             onChange={handleChange}
             className="w-full p-2 border rounded"
             required
+            readOnly // Campo somente leitura, calculado automaticamente
           />
         </div>
 
@@ -138,20 +163,33 @@ const EditarAbastecimento = () => {
           <label htmlFor="vehicle" className="block text-sm font-medium">
             Veículo
           </label>
-          <input
-            type="text"
+          <select
             id="vehicle"
             name="vehicle"
             value={formData.vehicle}
             onChange={handleChange}
             className="w-full p-2 border rounded"
             required
-          />
+          >
+            <option value="">Selecione um veículo</option>
+            {vehicles.map((vehicle) => (
+              <option key={vehicle.id} value={vehicle.id}>
+                {vehicle.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="text-center">
           <button className="w-full bg-blue-600 text-white px-4 py-2 rounded mt-4" type="submit">
             Salvar Alterações
+          </button>
+          <button
+            className="mt-4 w-full border-4 border-blue-600 text-blue-600 px-4 py-2 rounded"
+            type="button"
+            onClick={() => router.push('/historicoAbastecimento')}
+          >
+            Cancelar
           </button>
         </div>
       </form>

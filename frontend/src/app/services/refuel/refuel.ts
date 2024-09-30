@@ -8,9 +8,9 @@ const API_URL = 'http://localhost:8000/api/v1/';
 export interface Refuel {
     id?: number;
     vehicle: string; //vehicle: Vehicle
-    price_gasoline: number;
-    value_total: number;
-    liters_gasoline: number;
+    price_gasoline: number | undefined;
+    value_total: number | undefined;
+    liters_gasoline: number | undefined;
     refuel_date: string;
 }
 

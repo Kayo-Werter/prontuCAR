@@ -9,3 +9,7 @@ const TelaLimpa = () => {
 };
 
 export default TelaLimpa;
+
+
+/* instalar a biblioteca para o grafico: npm install react-chartjs-2 chart.js */
+
