@@ -6,5 +6,5 @@ class DocumentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Document
-        Fields = '__all__'
+        fields = '__all__'
         

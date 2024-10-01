@@ -1,4 +1,5 @@
-from rest_framework import viewsets, response, status
+from rest_framework import viewsets, response, status, filters
+from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from vehicle import metrics 
 from .serializers import VehicleSerializer
@@ -8,6 +9,8 @@ from vehicle.models import Vehicle
 class VehicleViewSet(viewsets.ModelViewSet):
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['automobile']
 
 
 class VehicleExpensesViewSet(viewsets.ViewSet):
