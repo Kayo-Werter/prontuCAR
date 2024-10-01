@@ -55,11 +55,6 @@ const EditarPeca = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const maintenanceData = {
-      ...formData,
-      replacement_day: new Date(formData.replacement_day), // Converte string para Date
-    };
-
 
     if (id) {
       axios.put(`http://localhost:8000/api/v1/replacement/${id}/`, formData)
