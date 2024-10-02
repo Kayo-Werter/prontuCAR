@@ -81,7 +81,7 @@ const Veiculos = () => {
               <div>
                 <p><strong>Automóvel:</strong> {vehicle.automobile}</p>
                 <p><strong>Data de Compra:</strong> {vehicle.buy_day}</p>
-                <p><strong>Documento:</strong> {vehicle.document}</p>
+                <p><strong>Documento:</strong> {vehicle.file ? vehicle.file.split('/').pop() : 'Nenhum documento'}</p> {/*O método split('/') divide a URL em partes usando a barra / como delimitador, e pop() pega o último elemento da array resultante */}
                 <p><strong>Placa:</strong> {vehicle.plate}</p>
                 <p><strong>Modelo:</strong>{vehicle.name}</p>
               </div>

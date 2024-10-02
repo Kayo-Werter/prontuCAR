@@ -100,8 +100,8 @@ const NovoVeiculo = () => {
 
 export default NovoVeiculo;*/
 
-"use client"
- 
+"use client";
+
 import { useState } from "react";
 import InputMask from "react-input-mask";
 import { Vehicle, createVehicle } from "../../services/vehicle/vehicle";
@@ -109,11 +109,17 @@ import { vehicleTypes } from "../../services/vehicle/vehicleType";
 import { useRouter } from "next/navigation";
 
 const AddNewVehicle = () => {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<{
+        automobile: string;
+        name: string;
+        plate: string;
+        file: File | null; // Alterado para File | null para lidar com o arquivo
+        buy_day: string;
+    }>({
         automobile: "",
         name: "",
         plate: "",
-        document: "",
+        file: null, // Inicializa como null
         buy_day: "",
     });
     const [error, setError] = useState<string | null>(null);
@@ -121,32 +127,42 @@ const AddNewVehicle = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: value,
-        }));
+
+        if (name === "file") {
+            // Lidar com a mudança do arquivo
+            const target = e.target as HTMLInputElement;
+            const selectedFile = target.files?.[0] || null; // Pega o arquivo se existir
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                file: selectedFile,
+            }));
+        } else {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: value,
+            }));
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
 
-        const vehicleData: Vehicle = {
-            automobile: formData.automobile,
-            name: formData.name,
-            plate: formData.plate || undefined,
-            document: formData.document ? parseInt(formData.document) : undefined,
-            buy_day: formData.buy_day || undefined,
-        };
+        const formDataToSend = new FormData(); // Usar FormData para enviar o arquivo
+        formDataToSend.append("automobile", formData.automobile);
+        formDataToSend.append("name", formData.name);
+        if (formData.plate) formDataToSend.append("plate", formData.plate);
+        if (formData.file) formDataToSend.append("file", formData.file); // Anexa o arquivo
+        formDataToSend.append("buy_day", formData.buy_day);
 
         try {
-            await createVehicle(vehicleData);
+            await createVehicle(formDataToSend); // Envia o FormData
             alert("Veículo criado com sucesso!");
             setFormData({
                 automobile: "",
                 name: "",
                 plate: "",
-                document: "",
+                file: null, // Reseta para null após a submissão
                 buy_day: "",
             });
         } catch (error) {
@@ -211,21 +227,35 @@ const AddNewVehicle = () => {
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium" htmlFor="document">Documento</label>
+                    <label className="block text-sm font-medium" htmlFor="file">Documento</label>
                     <input
-                      type="text"
-                      name="document"
-                      value={formData.document}
-                      onChange={handleChange}
-                      placeholder="Insira Documento"
-                      className="w-full p-2 border rounded"
+                        type="file"
+                        name="file"
+                        id="file"
+                        onChange={handleChange}
+                        className="hidden"
                     />
+                    <button
+                        type="button"
+                        onClick={() => document.getElementById('file')?.click()}
+                        className="w-full p-2 border rounded bg-blue-500 text-white hover:bg-blue-600"
+                    >
+                        Escolher Arquivo
+                    </button>
+                    {formData.file && (
+                        <span className="ml-2">{formData.file.name}</span>
+                    )}
                 </div>
+
                 <div className="text-center">
-                    <button className="w-full bg-blue-600 text-white px-4 py-2 rounded mt-4" type="submit" onClick={() => router.push('/veiculos')}>
+                    <button className="w-full bg-blue-600 text-white px-4 py-2 rounded mt-4" type="submit">
                         Salvar
                     </button>
-                    <button className="mt-4 w-full border-4 border-blue-600 text-blue-600 px-4 py-2 rounded" type="submit" onClick={() => router.push('/veiculos')} >
+                    <button
+                        type="button"
+                        className="mt-4 w-full border-4 border-blue-600 text-blue-600 px-4 py-2 rounded"
+                        onClick={() => router.push('/veiculos')}
+                    >
                         Cancelar
                     </button>
                 </div>

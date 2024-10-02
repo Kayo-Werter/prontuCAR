@@ -8,7 +8,7 @@ export interface Vehicle {
     automobile: string;
     name: string;
     plate?: string;
-    document?: number;
+    file?: string;
     buy_day?: string;
 }
 
@@ -20,7 +20,7 @@ export interface VehicleResponse {
 }
   
 
-export const createVehicle = async (data: Vehicle) => {
+/*export const createVehicle = async (data: Vehicle) => {
     try {
         const response = await axios.post(`${API_URL}vehicle/`, data);
         return response.data;
@@ -28,7 +28,21 @@ export const createVehicle = async (data: Vehicle) => {
         console.error('Error creating vehicle', error);
         throw error;
     }
+};*/
+export const createVehicle = async (data: FormData) => {
+    try {
+        const response = await axios.post(`${API_URL}vehicle/`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error creating vehicle', error);
+        throw error;
+    }
 };
+
 
 export const getVehicles = async () => {
     try {
