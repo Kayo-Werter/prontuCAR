@@ -8,19 +8,14 @@ from maintenance.models import Maintenance
 from maintenance.api.serializers import MaintenanceSerializer
 
 
-
-
 class HomeApiViewSet(viewsets.ViewSet):
 
     def list(self, request):
         user = request.user
         city = user.address.city
         weather = openweathermap.OpenWeatherMap(city)
-        last_maintenance = Maintenance.objects.last()
+        last_maintenance = Maintenance.objects.filter(vehicle__user=user).last()
         today = datetime.now()
-
-
-
         try:
             temperature = weather.temp()
             description = weather.description()
@@ -42,4 +37,3 @@ class HomeApiViewSet(viewsets.ViewSet):
         
         except requests.exceptions.RequestException as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-

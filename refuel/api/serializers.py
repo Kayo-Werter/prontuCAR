@@ -3,7 +3,6 @@ from refuel.models import Refuel
 
 
 class RefuelSerializer(serializers.ModelSerializer):
-    vehicle = serializers.CharField(source='vehicle.name', read_only=True)
 
     class Meta:
         model = Refuel

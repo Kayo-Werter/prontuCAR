@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.core.validators import FileExtensionValidator
+from user.models import CustomUser
 
 
 class Vehicle(models.Model):
@@ -14,7 +15,7 @@ class Vehicle(models.Model):
     plate = models.CharField(max_length=255, null=True, blank=True)
     file = models.FileField(null=True, blank=True, upload_to='documents/', validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
     buy_day = models.DateField(default=timezone.now)
-
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE) 
 
     def __str__(self):
         return self.name

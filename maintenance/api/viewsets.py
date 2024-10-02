@@ -11,4 +11,7 @@ class MaintenanceViewSet(viewsets.ModelViewSet):
     serializer_class = MaintenanceSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['vehicle']
+
+    def get_queryset(self):
+        return Maintenance.objects.filter(vehicle__user=self.request.user)
     
