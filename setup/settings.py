@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     
     'authentication',
-    'document',
     'maintenance',
     'refuel',
     'replacement',
