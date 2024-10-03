@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import permissions
+from rest_framework.routers import DefaultRouter
+from .viewsets import HomeApiViewSet
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from document.api.router import document_router
 from maintenance.api.router import maintenance_router
 from refuel.api.router import refuel_router
 from replacement.api.router import replacement_router
@@ -24,15 +25,22 @@ permission_classes = [permissions.AllowAny]
 
 )
 
+home_router = DefaultRouter()
+home_router.register('home', HomeApiViewSet, basename='home')
 
 urlpatterns = [
    path('admin/', admin.site.urls),
-   
-   path('api/v1/', include(document_router.urls)),
+
+   path('api/v1/', include('authentication.urls')),
+   path('api/v1/', include('user.urls')),
+
+   path('api/v1/', include(vehicle_router.urls)),
    path('api/v1/', include(maintenance_router.urls)),
    path('api/v1/', include(refuel_router.urls)),
    path('api/v1/', include(replacement_router.urls)),
-   path('api/v1/', include(vehicle_router.urls)),
+
+   path('api/v1/', include(home_router.urls)),
+
    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]

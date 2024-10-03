@@ -10,3 +10,6 @@ class RefuelViewSet(viewsets.ModelViewSet):
     serializer_class = RefuelSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['vehicle']
+
+    def get_queryset(self):
+        return Refuel.objects.filter(vehicle__user=self.request.user)

@@ -13,11 +13,23 @@ class VehicleViewSet(viewsets.ModelViewSet):
     filterset_fields = ['automobile']
 
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+    
+    def get_queryset(self):
+        return Vehicle.objects.filter(user=self.request.user)
+
+
 class VehicleExpensesViewSet(viewsets.ViewSet):
-    queryset = Vehicle.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+    
+    def get_queryset(self):
+        return Vehicle.objects.filter(user=self.request.user)
 
     def list(self, request):
-        vehicles = self.queryset
+        vehicles = self.get_queryset()
         data = []
 
         for vehicle in vehicles:
@@ -43,7 +55,7 @@ class VehicleExpensesViewSet(viewsets.ViewSet):
     
 
     def retrieve(self, request, pk=None):
-        vehicle = get_object_or_404(self.queryset, pk=pk)
+        vehicle = get_object_or_404(self.get_queryset(), pk=pk)
         refuels = vehicle.refuels.all()
         maintenances = vehicle.maintenances.all()
         replacements = vehicle.replacements.all()

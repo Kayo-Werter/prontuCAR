@@ -3,7 +3,6 @@ from replacement.models import Replacement
 
 
 class ReplacementSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Replacement
         fields = '__all__'

@@ -10,4 +10,8 @@ class ReplacementViewSet(viewsets.ModelViewSet):
     serializer_class = ReplacementSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['vehicle']
+
+
+    def get_queryset(self):
+        return Replacement.objects.filter(vehicle__user=self.request.user)
     
