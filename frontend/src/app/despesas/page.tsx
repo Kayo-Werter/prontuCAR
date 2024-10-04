@@ -1,15 +1,144 @@
 "use client";
 
-const TelaLimpa = () => {
+import { createMaintenance } from "@/app/services/maintenance/maintenance";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Vehicle } from "./../services/vehicle/vehicle";
+import { useRouter } from "next/navigation";
+import CurrencyInput from 'react-currency-input-field'; // Use a biblioteca para entrada de moeda
+
+const NovaManutencao = () => {
+  const [formData, setFormData] = useState({
+    vehicle: "",
+    value: "", // Mantenha como string para o formato
+    description: "",
+    local: "",
+    maintenance_date: "",
+  });
+
+  const router = useRouter();
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+
+  const fetchVehicles = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/v1/vehicle/');
+      console.log('Dados dos veículos:', response.data);
+      setVehicles(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar veículos:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchVehicles();
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleValueChange = (value: string | undefined) => {
+    setFormData({
+      ...formData,
+      value: value || "", // Mantém como string, sem "0" quando vazio
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const maintenanceData = {
+      ...formData,
+      value: parseFloat(formData.value.replace('R$ ', '').replace('.', '').replace(',', '.')), // Limpa o valor para conversão
+    };
+
+    try {
+      await createMaintenance(maintenanceData);
+      alert("Manutenção criada com sucesso!");
+    } catch (error) {
+      console.error("Erro ao criar manutenção:", error);
+    }
+  };
+
   return (
-    <div className="p-6 flex justify-center items-center h-screen">
-      <h1 className="text-3xl font-bold">DESPESAS</h1>
+    <div className="p-6 grid justify-items-center">
+      <h1 className="text-2xl font-bold mb-6">Nova Manutenção</h1>
+      <form onSubmit={handleSubmit} className="space-y-2 w-full max-w-md">
+        <div>
+          <label className="block text-sm font-medium">Data da manutenção:</label>
+          <input
+            type="date"
+            name="maintenance_date"
+            value={formData.maintenance_date}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Tipo de Veículo</label>
+          <select
+            name="vehicle"
+            value={formData.vehicle}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          >
+            <option value="">Selecione um veículo</option>
+            {vehicles.map((vehicle) => (
+              <option key={vehicle.id} value={vehicle.id}>
+                {vehicle.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Observações:</label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Digite aqui:"
+            className="w-full p-2 border rounded"
+            rows={4}
+          ></textarea>
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Local:</label>
+          <input
+            type="text"
+            name="local"
+            value={formData.local}
+            onChange={handleChange}
+            placeholder="Digite aqui:"
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Valor:</label>
+          <CurrencyInput
+            name="value"
+            value={formData.value}
+            onValueChange={handleValueChange}
+            prefix="R$ "
+            placeholder="R$ 0,00"
+            className="w-full p-2 border rounded"
+            decimalsLimit={2}
+            //allowNegativeValue={false}
+          />
+        </div>
+        <div className="text-center">
+          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded" type="submit" onClick={() => router.push('/historicoManutencao')}>
+            Salvar
+          </button>
+          <button className="mt-4 w-full border-4 border-blue-600 text-blue-600 px-4 py-2 rounded" type="button" onClick={() => router.push('/historicoManutencao')}>
+            Cancelar
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
 
-export default TelaLimpa;
-
-
-/* instalar a biblioteca para o grafico: npm install react-chartjs-2 chart.js */
-
+export default NovaManutencao;

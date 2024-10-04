@@ -102,11 +102,11 @@ export default NovoVeiculo;*/
 
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import InputMask from "react-input-mask";
-import { Vehicle, createVehicle } from "../../services/vehicle/vehicle";
+import { createVehicle } from "../../services/vehicle/vehicle";
 import { vehicleTypes } from "../../services/vehicle/vehicleType";
-import { useRouter } from "next/navigation";
 
 const AddNewVehicle = () => {
     const [formData, setFormData] = useState<{
