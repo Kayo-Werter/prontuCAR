@@ -4,6 +4,7 @@ import axios from 'axios';
 const API_URL = 'http://localhost:8000/api/v1/';
 
 export interface Document {
+    id? : number;
     name: string;
     description: string;
     upload_date: Date;

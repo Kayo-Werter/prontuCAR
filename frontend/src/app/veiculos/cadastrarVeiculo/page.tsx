@@ -248,14 +248,11 @@ const AddNewVehicle = () => {
                 </div>
 
                 <div className="text-center">
-                    <button className="w-full bg-blue-600 text-white px-4 py-2 rounded mt-4" type="submit">
+                    <button className="w-full bg-blue-600 text-white px-4 py-2 rounded mt-4" type="submit" onClick={() => router.push('/veiculos')}>
                         Salvar
                     </button>
                     <button
-                        type="button"
-                        className="mt-4 w-full border-4 border-blue-600 text-blue-600 px-4 py-2 rounded"
-                        onClick={() => router.push('/veiculos')}
-                    >
+                        type="button" className="mt-4 w-full border-4 border-blue-600 text-blue-600 px-4 py-2 rounded" onClick={() => router.push('/veiculos')}>
                         Cancelar
                     </button>
                 </div>

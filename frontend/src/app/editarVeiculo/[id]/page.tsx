@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { vehicleTypes } from "../../services/vehicle/vehicleType";
+//import { getDocuments, Document } from '../../services/file/document'; // Importar as funções de documento
+
 
 // Defina uma interface para os dados do formulário
 interface FormData {
@@ -19,6 +21,8 @@ const EditarVeiculo = () => {
     const params = useParams();
     const id = params?.id as string | undefined;
     const router = useRouter();
+    //const [documents, setDocuments] = useState<Document[]>([]); // Novo estado para armazenar os documentos
+
 
     const [formData, setFormData] = useState<FormData>({
         automobile: '',
@@ -190,6 +194,10 @@ const EditarVeiculo = () => {
                 <div className="text-center">
                     <button className="w-full bg-blue-600 text-white px-4 py-2 rounded mt-4" type="submit">
                         Salvar Alterações
+                    </button>
+                    <button
+                        type="button" className="mt-4 w-full border-4 border-blue-600 text-blue-600 px-4 py-2 rounded" onClick={() => router.push('/veiculos')}>
+                        Cancelar
                     </button>
                 </div>
             </form>
