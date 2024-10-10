@@ -8,7 +8,7 @@ export default function Login() {
   async function handleLogin (formulario: FormData) {
     'use server'
 
-    const response = await fetch("http://127.0.0.1:8000/api/token/", {
+    const response = await fetch("http://localhost:8000/api/v1/", {
       method: "POST",
       body: formulario,
     })
@@ -24,7 +24,7 @@ export default function Login() {
     <div className="h-screen flex flex-col md:flex-row relative">
       {/* Esquerda - Formulário de Login */}
       <div className="w-full md:w-1/2 bg-gray-100 flex flex-col justify-center items-center p-6 md:p-10">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-black">Bem vindo!</h1>
+        <h1 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-black text-center">Bem vindo!</h1>
         <form className="w-full max-w-xs">
           <div className="mb-4">
             <Input
@@ -64,10 +64,11 @@ export default function Login() {
             alt="Login illustration"
             width={500}
             height={500}
-            className="object-contain absolute md:-left-40"
+            className="object-contain w-full h-auto md:max-w-[80%] md:h-auto"
           />
       </div>
     </div>
   );
   
 };
+
