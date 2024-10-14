@@ -1,41 +1,23 @@
 "use client";
 
+import { CategoryScale, Chart, Filler, Legend, LinearScale, LineElement, PointElement, Title, Tooltip } from 'chart.js';
 import { useEffect, useState } from 'react';
-import { CategoryScale, Chart, Legend, LinearScale, LineElement, PointElement, Title, Tooltip } from 'chart.js';
 import { Line } from "react-chartjs-2";
-import { getVehicleExpenses } from '../services/vehicle/VehicleExpense'; // Atualize o caminho conforme necessário
-import { Vehicle } from '../services/vehicle/vehicle';
-import { VehicleExpense } from '../services/vehicle/VehicleExpense';
-import { getVehicles } from '../services/vehicle/vehicle';
-import axios from 'axios';
+import { getVehicleExpenses, getVehicleExpensesById, VehicleExpense } from '../services/vehicle/VehicleExpense';
+
 // Registrando os componentes do Chart.js
-Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 const DespesasPage = () => {
-  //const [expensesData, setExpensesData] = useState<VehicleExpense[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedVehicle, setSelectedVehicle] = useState<number | null>(null); // Estado para o veículo selecionado
-  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [selectedVehicle, setSelectedVehicle] = useState<number | null>(null);
   const [vehicleExpenses, setVehicleExpenses] = useState<VehicleExpense[]>([]);
-
-  useEffect(() => {
-    const fetchVehicles = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/api/v1/vehicle/');
-        console.log('Dados recebidos na função fetchVehicles:', response.data);
-        setVehicles(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar veículos:", error);
-      }
-    };
-
-    fetchVehicles();
-  }, []);
+  const [selectedExpenseData, setSelectedExpenseData] = useState<VehicleExpense | null>(null);
 
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
-        const data = await getVehicleExpenses(); // Chame a função que retorna todas as despesas
+        const data = await getVehicleExpenses();
         console.log('Dados de despesas:', data);
         setVehicleExpenses(data);
       } catch (error) {
@@ -48,33 +30,36 @@ const DespesasPage = () => {
     fetchExpenses();
   }, []);
 
-  // Filtrar despesas com base no veículo selecionado
-  const selectedExpenseData = selectedVehicle !== null
-    ? vehicleExpenses.find(expense => expense.vehicle_id === selectedVehicle)
-    : null;
+  useEffect(() => {
+    const fetchExpenseById = async () => {
+      if (selectedVehicle !== null) {
+        setLoading(true);
+        try {
+          const data = await getVehicleExpensesById(selectedVehicle);
+          console.log('Dados de despesas do veículo selecionado:', data);
+          setSelectedExpenseData(data[0]); // Acessa o primeiro elemento do array
+        } catch (error) {
+          console.error("Erro ao buscar despesas do veículo pelo ID", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
 
-  // Somar os valores das despesas para exibir nos cartões
-  const totalRefuels = selectedExpenseData
-    ? selectedExpenseData.refuels_data.reduce((sum, refuel) => sum + refuel.price, 0)
-    : 0;
-
-  const totalMaintenances = selectedExpenseData
-    ? selectedExpenseData.maintenances_data.reduce((sum, maintenance) => sum + maintenance.price, 0)
-    : 0;
-
-  const totalReplacements = selectedExpenseData
-    ? selectedExpenseData.replacements.reduce((sum, replacement) => sum + replacement.price, 0)
-    : 0;
-
-  const totalExpenses = totalRefuels + totalMaintenances + totalReplacements;
+    fetchExpenseById();
+  }, [selectedVehicle]);
 
   // Processar dados para o gráfico
   const chartData = {
-    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'], // Ajuste conforme necessário
+    labels: ['Abastecimentos', 'Manutenções', 'Peças Trocas'], // Adicione outros meses se necessário
     datasets: [
       {
         label: 'Despesas (R$)',
-        data: selectedExpenseData ? selectedExpenseData.refuels_data.map(refuel => refuel.price) : [], // Exemplo para abastecimentos
+        data: selectedExpenseData ? [
+          selectedExpenseData.expenses?.total_refuels ? parseFloat(selectedExpenseData.expenses.total_refuels.replace(',', '.')) : 0,
+          selectedExpenseData.expenses?.total_maintenances ? parseFloat(selectedExpenseData.expenses.total_maintenances.replace(',', '.')) : 0,
+          selectedExpenseData.expenses?.total_replacements ? parseFloat(selectedExpenseData.expenses.total_replacements.replace(',', '.')) : 0
+        ] : [],
         fill: true,
         borderColor: 'rgb(75, 192, 192)',
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -83,44 +68,41 @@ const DespesasPage = () => {
     ],
   };
 
-   // Opções do gráfico
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        display: false,
+        display: true,
       },
       title: {
-        display: false,
+        display: true,
+        text: 'Despesas por Categoria',
       },
     },
     scales: {
       y: {
         beginAtZero: true,
         ticks: {
-          callback: function(value: string | number) { // Define o tipo do parâmetro como number
-            return 'R$ ' + value; // Adicionar R$ nas labels do eixo Y
+          callback: function (value: string | number) {
+            return 'R$ ' + value;
           }
         }
       }
     }
   };
-  
-  
 
   if (loading) {
     return <p>Loading...</p>;
   }
 
-  if (vehicleExpenses.length === 0) {
+  if (!vehicleExpenses || vehicleExpenses.length === 0) {
     return <p>No data available</p>;
   }
-
+  
   const handleVehicleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = Number(e.target.value);
-    setSelectedVehicle(value); // Atualiza o veículo selecionado
+    setSelectedVehicle(value);
   };
-  
 
   return (
     <div className="flex flex-col items-center p-6 bg-blue-50 min-h-screen">
@@ -129,7 +111,7 @@ const DespesasPage = () => {
       {/* Formulário para seleção de veículo */}
       <form className="mb-6">
         <div className="flex space-x-4">
-        <select
+          <select
             name="vehicle_name"
             value={selectedVehicle || ""}
             onChange={handleVehicleChange}
@@ -137,7 +119,7 @@ const DespesasPage = () => {
             <option value="">Selecione um veículo</option>
             {vehicleExpenses.map((vehicleExpense) => (
               <option key={vehicleExpense.vehicle_id} value={vehicleExpense.vehicle_id}>
-                {vehicleExpense.vehicle_name} {/* Nome do veículo */}
+                {vehicleExpense.vehicle_name}
               </option>
             ))}
           </select>
@@ -148,25 +130,25 @@ const DespesasPage = () => {
       <div className="grid grid-cols-4 gap-4 mb-6 w-full max-w-screen-lg">
         <div className="bg-blue-400 text-white p-4 rounded shadow-lg">
           <p>Abastecimentos</p>
-          <h2 className="text-2xl font-bold">R$ {totalRefuels.toFixed(2)}</h2>
+          <h2 className="text-2xl font-bold">R$ {selectedExpenseData?.expenses?.total_refuels || "0,00"}</h2>
         </div>
         <div className="bg-red-400 text-white p-4 rounded shadow-lg">
           <p>Manutenções</p>
-          <h2 className="text-2xl font-bold">R$ {totalMaintenances.toFixed(2)}</h2>
+          <h2 className="text-2xl font-bold">R$ {selectedExpenseData?.expenses?.total_maintenances || "0,00"}</h2>
         </div>
         <div className="bg-green-400 text-white p-4 rounded shadow-lg">
           <p>Peças trocadas</p>
-          <h2 className="text-2xl font-bold">R$ {totalReplacements.toFixed(2)}</h2>
+          <h2 className="text-2xl font-bold">R$ {selectedExpenseData?.expenses?.total_replacements || "0,00"}</h2>
         </div>
         <div className="bg-yellow-400 text-white p-4 rounded shadow-lg">
           <p>Total</p>
-          <h2 className="text-2xl font-bold">R$ {totalExpenses.toFixed(2)}</h2>
+          <h2 className="text-2xl font-bold">R$ {selectedExpenseData?.expenses?.total || "0,00"}</h2>
         </div>
       </div>
 
       {/* Gráfico */}
       <div className="bg-white p-6 rounded shadow-lg w-full max-w-screen-lg">
-        <h2 className="text-lg font-semibold mb-4">Gráfico (Últimos 6 meses):</h2>
+        <h2 className="text-lg font-semibold mb-4">Gráfico de Despesas:</h2>
         <Line data={chartData} options={options} />
       </div>
     </div>
@@ -174,6 +156,11 @@ const DespesasPage = () => {
 };
 
 export default DespesasPage;
+
+
+
+
+
 
 
 
