@@ -15,7 +15,7 @@ export interface Replacement{
     id?: number;
     vehicle: string;
     exchanged_part: string;
-    value_part: string;
+    value_part: number;
     replacement_day: string;
     description: string;
     local: string;

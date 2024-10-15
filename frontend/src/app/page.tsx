@@ -120,7 +120,7 @@ export default function Home() {
 
 
 
-import { FaBell } from "react-icons/fa6";
+/*import { FaBell } from "react-icons/fa6";
 export default function Dashboard() {
   return (
     <div className="p-2 md:p-6 bg-blue-100 min-h-screen">
@@ -168,5 +168,17 @@ export default function Dashboard() {
       </div>
     </div>
   );
+}
+
+*/
+
+"use client"
+
+// src/app/page.tsx
+import { redirect } from 'next/navigation';
+
+export default function Page() {
+  // Redireciona para a tela de login
+  redirect('/telaLogin'); // Certifique-se de usar o caminho correto para a tela de login
 }
 
