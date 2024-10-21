@@ -1,4 +1,5 @@
 from rest_framework import viewsets, response, status, filters
+from rest_framework import serializers
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from vehicle import metrics 
@@ -12,12 +13,37 @@ class VehicleViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['automobile']
 
+    def get_queryset(self):
+        return Vehicle.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        vehicle = serializer.validated_data['vehicle']
+        if vehicle.user != self.request.user:
+            raise serializers.ValidationError("Erro ao adicionar um novo veículo.")
+        serializer.save()
+
+    def perform_update(self, serializer):
+        vehicle = serializer.validated_data['vehicle']
+        if vehicle.user != self.request.user:
+            raise serializers.ValidationError("Você não pode atualizar veículos que não são seus.")
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        if instance.vehicle.user != self.request.user:
+            raise serializers.ValidationError("Você não pode deletar veículos que não são seus.")
+        instance.delete()
+
 
 class VehicleExpensesViewSet(viewsets.ViewSet):
-    queryset = Vehicle.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+    
+    def get_queryset(self):
+        return Vehicle.objects.filter(user=self.request.user)
 
     def list(self, request):
-        vehicles = self.queryset
+        vehicles = self.get_queryset()
         data = []
 
         for vehicle in vehicles:
@@ -43,7 +69,7 @@ class VehicleExpensesViewSet(viewsets.ViewSet):
     
 
     def retrieve(self, request, pk=None):
-        vehicle = get_object_or_404(self.queryset, pk=pk)
+        vehicle = get_object_or_404(self.get_queryset(), pk=pk)
         refuels = vehicle.refuels.all()
         maintenances = vehicle.maintenances.all()
         replacements = vehicle.replacements.all()

@@ -53,13 +53,8 @@ const EditarManutencao = () => {
   const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
 
-      const maintenanceData: Maintenance = {
-          ...formData,
-          maintenance_date: new Date(formData.maintenance_date).toISOString(), // Converte para ISO string
-      };
-
       if (id) {
-          axios.put(`http://localhost:8000/api/v1/maintenance/${id}/`, maintenanceData)
+          axios.put(`http://localhost:8000/api/v1/maintenance/${id}/`, formData)
               .then(() => {
                   alert('Manutenção atualizada com sucesso!');
                   router.push('/historicoManutencao'); // Redireciona para a página de histórico
