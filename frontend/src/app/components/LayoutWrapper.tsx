@@ -1,8 +1,9 @@
 
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { usePathname } from "next/navigation";
 import { Sidebar } from "./Sidebar";
+
 
 interface LayoutWrapperProps {
   children: React.ReactNode;
@@ -10,7 +11,6 @@ interface LayoutWrapperProps {
 
 const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
   const pathname = usePathname();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Defina as rotas onde a Sidebar não deve aparecer
   const noSidebarPaths = ["/telaLogin", "/telaCadastro"];
@@ -18,9 +18,8 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen flex bg-blue-100">
-      {shouldRenderSidebar && <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />}
-      {/* Ajuste dinâmico */}
-      <div className={`flex-1 transition-all duration-300 ${isSidebarOpen ? "pl-64" : "pl-16"}`}>
+      {shouldRenderSidebar && <Sidebar />}
+      <div className={`flex-1 ${shouldRenderSidebar ? "pl-16 md:pl-30" : ""}`}>
         {children}
       </div>
     </div>
