@@ -9,8 +9,7 @@ import { FiHome, FiMenu, FiX } from "react-icons/fi";
 import { VscTools } from "react-icons/vsc";
 import { SidebarItem } from "./SidebarItem";
 
-export const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+export const Sidebar = ({ isOpen, setIsOpen }) => {
   const router = useRouter();
 
   const handleLogoClick = () => {
@@ -20,7 +19,6 @@ export const Sidebar = () => {
   return (
     <aside className={`fixed top-0 left-0 h-full flex flex-col p-4 bg-gray-50 transition-transform duration-1000 ease-in-out ${isOpen ? "w-64" : "w-16"} z-50`}>
       <div className="flex items-center justify-between mb-10">
-        {/* Logotipo */}
         <div onClick={handleLogoClick} className={`cursor-pointer ${isOpen ? "block" : "hidden"}`}>
           <Image
             src="/logo.png"
@@ -30,7 +28,6 @@ export const Sidebar = () => {
             priority // Carregar a imagem com prioridade
           />
         </div>
-        {/* Botão do Menu Hambúrguer */}
         <button onClick={() => setIsOpen(!isOpen)} className="focus:outline-none">
           {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
         </button>
