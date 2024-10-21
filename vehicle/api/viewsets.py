@@ -84,10 +84,7 @@ class VehicleExpensesViewSet(viewsets.ViewSet):
         data.append({
             'vehicle_id': vehicle.id,
             'vehicle_name': vehicle.name,
-            'expenses': expenses,
-            'refuels_data': refuels_data,
-            'maintenances_data': maintenances_data,
-            'replacements': replacements_data
+            'expenses': expenses
         })
 
         return response.Response(data=data, status=status.HTTP_200_OK)
