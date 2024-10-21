@@ -17,19 +17,13 @@ class VehicleViewSet(viewsets.ModelViewSet):
         return Vehicle.objects.filter(user=self.request.user)
     
     def perform_create(self, serializer):
-        vehicle = serializer.validated_data['vehicle']
-        if vehicle.user != self.request.user:
-            raise serializers.ValidationError("Erro ao adicionar um novo veículo.")
-        serializer.save()
+        serializer.save(user=self.request.user)
 
     def perform_update(self, serializer):
-        vehicle = serializer.validated_data['vehicle']
-        if vehicle.user != self.request.user:
-            raise serializers.ValidationError("Você não pode atualizar veículos que não são seus.")
-        serializer.save()
+        serializer.save(user=self.request.user)
 
     def perform_destroy(self, instance):
-        if instance.vehicle.user != self.request.user:
+        if instance.user != self.request.user:
             raise serializers.ValidationError("Você não pode deletar veículos que não são seus.")
         instance.delete()
 
