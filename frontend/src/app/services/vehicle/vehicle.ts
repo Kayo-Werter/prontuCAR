@@ -35,6 +35,19 @@ export const createVehicle = async (data: FormData) => {
         throw error;
     }
 };
+/*export const createVehicle = async (vehicleData: FormData, token: string) => {
+    try {
+        const response = await axios.post(`${API_URL}vehicle/`, vehicleData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error("Erro ao criar o veículo.");
+    }
+};*/
 
 
 export const getVehicles = async () => {

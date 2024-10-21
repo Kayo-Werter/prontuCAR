@@ -100,19 +100,32 @@ export default function Login() {
       body: JSON.stringify({ username, password }),
     });
 
+    // Verifique o status da resposta e o conteúdo
     if (response.ok) {
       const data = await response.json();
-      const token = data.token; // Supondo que a resposta tenha a propriedade `token`
+      console.log('Dados da resposta:', data); // Log dos dados da resposta
 
-      // Armazenar o token no localStorage ou state, conforme sua necessidade
-      localStorage.setItem('token', token);
+      // Agora você deve acessar o token de acesso
+      const token = data.access; // Armazene o token de acesso
 
-      // Redirecionar para a página principal após o login
-      router.push("/home");
-  
+      if (token) {
+        // Armazenar o token no localStorage
+        localStorage.setItem('token', token);
+
+        // Verifica se o token foi salvo corretamente
+        const savedToken = localStorage.getItem('token');
+        console.log('Token salvo:', savedToken); // Verifica o token no console
+
+        // Redirecionar para a página principal após o login
+        router.push("/home");
+      } else {
+        console.error('Token de acesso não encontrado na resposta da API');
+      }
+
     } else {
       // Tratar erros de autenticação
-      console.error('Erro ao fazer login');
+      const errorData = await response.json(); // Log de erros
+      console.error('Erro ao fazer login:', errorData);
     }
   }
 
