@@ -145,7 +145,7 @@ const Abastecimentos = () => {
         },
       });
       console.log('Dados recebidos na função fetchRefuels:', response.data);
-      setRefuels(response.data); // Ajuste conforme a estrutura da resposta da API
+      setRefuels(response.data.results); // Ajuste conforme a estrutura da resposta da API
     } catch (error) {
       setError('Erro ao buscar abastecimentos');
       console.error('Erro ao buscar abastecimentos:', error);

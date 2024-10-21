@@ -158,7 +158,7 @@ const ListaPecas = () => {
           Authorization: `Bearer ${token}`, // Adicione o token ao cabeçalho
         },
       });
-      setReplacements(response.data);
+      setReplacements(response.data.results);
     } catch (error) {
       setError('Erro ao buscar Peça');
     } finally {
