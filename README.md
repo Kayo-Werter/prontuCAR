@@ -35,7 +35,7 @@ As telas foram prototipadas no [Figma](https://figma.com) para planejar a interf
 
 ### Pré-requisitos 
 - Python 3.8+
-- Django 3.2+
+- Django 5.x+
 - PostgreSQL
 
 ### Passo a Passo
